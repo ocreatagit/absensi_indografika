@@ -1,0 +1,180 @@
+@extends('template.master')
+
+@section('title')
+<title>ABSENSI - Jabatan</title>
+@stop
+
+@section('header')
+<h1 class="page-header">Master Data
+    <small>KARYAWAN</small>
+</h1>
+@stop
+
+@section('main')
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Informasi Pribadi</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="#">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Username</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Ulangi Password</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Nama</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Tempat Lahir</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Tanggal Lahir</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Alamat</label>
+                    <div class="col-sm-4 input-group ">
+                        <textarea style="width: 83.333%"></textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Informasi Karyawan</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="#">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Jabatan</label>
+                    <div class="col-sm-3 input-group ">
+                        <select class="form-control">
+                            <option>Helper</option>
+                            <option>Operator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Komisi Omset</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">
+                        <span class="input-group-addon">
+                            <span>%</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Jam Masuk</label>
+                    <div class="col-sm-3 input-group ">
+                        <select class="form-control">
+                            <option>08.00</option>
+                            <option>09.00</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Jam Istirahat</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" readonly class="form-control" value="13.00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Jam Pulang</label>
+                    <div class="col-sm-3 input-group ">
+                        <select class="form-control">
+                            <option>17.00</option>
+                            <option>18.00</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Informasi Gaji</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="#">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Jenis Gaji</label>
+                    <div class="col-sm-3 input-group ">
+                        <select class="form-control">
+                            <option>Gaji Pokok</option>
+                            <option>Gaji Harian</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Nominal Gaji</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="">                                    
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="col-sm-6">
+                <table class="table" id="datatable">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Jenis Gaji</th>
+                            <th class="text-left">Nominal Gaji</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-left">
+                        <tr>
+                            <td>Gaji Pokok</td>
+                            <td>Rp. <?php echo number_format(800000, 0, ',', '.') ?>,-</td>
+                        </tr>
+                        <tr>
+                            <td>Gaji Harian</td>
+                            <td>Rp. <?php echo number_format(75000, 0, ',', '.') ?>,-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@stop
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            donetext: 'Done'
+        });
+        $('#datatable').DataTable();
+    });
+</script> 
+@stop
+
+
+
