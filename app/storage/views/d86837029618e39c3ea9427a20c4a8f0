@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <?php echo $__env->yieldContent('title'); ?>
+
+        <?php echo HTML::style('css/bootstrap.min.css'); ?>
+
+        <?php echo HTML::style('css/1-col-portfolio.css'); ?>
+
+        <?php echo HTML::style('css/standalone.css'); ?>
+
+        <?php echo HTML::style('css/clockpicker.css'); ?>
+
+        <?php echo HTML::style('css/jquery.dataTables.min.css'); ?>
+
+
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <?php echo HTML::link('/', 'ABSENSI', array('class' => 'navbar-brand')); ?>
+
+                </div>
+
+                <!-- -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Master Data <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <?php echo HTML::link('jamkerja', 'Master Jam Kerja'); ?>
+
+                                </li>
+                                <li>
+                                    <?php echo HTML::link('jabatan', 'Master Jabatan'); ?>
+
+                                </li>
+                                <li>
+                                    <?php echo HTML::link('jenisgaji', 'Master Jenis Gaji'); ?>
+
+                                </li>
+                                <li>
+                                    <?php echo HTML::link('karyawan', 'Master Karyawan'); ?>
+
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <?php echo HTML::link('myindografika', 'My Indografika'); ?>
+
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Daftar Jam <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <?php echo HTML::link('daftarmasuk', 'Daftar Masuk Karyawan'); ?>
+
+                                </li>
+                                <li>
+                                    <?php echo HTML::link('daftarpulang', 'Daftar Pulang Karyawan'); ?>
+
+                                </li>
+                                <li>
+                                    <?php echo HTML::link('daftarlembur', 'Daftar Lembur Karyawan'); ?>
+
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                <!-- -->
+
+
+            </div>
+        </nav>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <?php echo $__env->yieldContent('header'); ?>
+                </div>
+            </div>
+            <?php echo $__env->yieldContent('main'); ?>
+            <hr>
+
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright &copy; Indografika</p>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+        <?php echo HTML::script('js/jquery.js'); ?>
+
+        <?php echo HTML::script('js/bootstrap.min.js'); ?>
+
+        <?php echo HTML::script('js/clockpicker.js'); ?>
+
+        <?php echo HTML::script('js/jquery.dataTables.min.js'); ?>
+
+
+        <?php echo $__env->yieldContent('script'); ?>
+    </body>
+
+</html>

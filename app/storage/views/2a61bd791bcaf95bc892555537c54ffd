@@ -1,0 +1,53 @@
+<?php $__env->startSection('title'); ?>
+<title>ABSENSI - Jabatan</title>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('header'); ?>
+<h1 class="page-header">
+    Daftar Lembur Kerja Karyawan
+</h1>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('main'); ?>
+<div class="row">
+    <h3>18/01/2016 | 08:34:56</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>No Absen</td>
+                <td>Nama Karyawan</td>
+                <td>Jam Masuk</td>
+                <td>Jam Pulang</td>
+                <td>Total Jam</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2345</td>
+                <td>Tuti</td>
+                <td>18:00</td>
+                <td>19:30</td>
+                <td>1,5 jam</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('script'); ?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            donetext: 'Done'
+        });
+        $('#datatable').DataTable();
+    });
+</script> 
+<?php $__env->stopSection(); ?>
+
+
+
+
+<?php echo $__env->make('template.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
