@@ -16,10 +16,7 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('jamkerja', function()
-{
-	return View::make('master.m_jam_kerja');
-});
+Route::get('jamkerja', 'MasterJamKerjaController@index');
 
 Route::get('jabatan', function()
 {
