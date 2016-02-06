@@ -1,6 +1,6 @@
 <?php
 
-class MasterJamKerjaController extends \BaseController {
+class MasterJabatanController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -8,15 +8,9 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $jam_kerja = JamKerjaModel::all();
-        $success = Session::get('mj02_success');
-        $data = array(
-            "jmmsk" => '',
-            "jmklr" => '',
-            "jam_kerjas" => $jam_kerja,
-            "mj02_success" => $success
-        );
-        return View::make('master.m_jam_kerja', $data);
+        $jabatan = JabatanModel::all();
+        $success = Session::get('mj01_success');
+        return View::make('master.m_jabatan')->with('jabatans', $jabatan)->with('mj01_success', $success);
     }
 
     /**
@@ -80,9 +74,7 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        // ERROR !!!
-        //$jam_kerja = JamKerjaModel::where();
-        return View::make('master.m_jam_kerja')->with('jam_kerja', $jam_kerja);
+        //
     }
 
     /**

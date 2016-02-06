@@ -16,12 +16,14 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+// Master Jam Kerja
 Route::get('jamkerja', 'MasterJamKerjaController@index');
+Route::post('jamkerja/create', 'MasterJamKerjaController@create');
+Route::get('jamkerja/edit/{id}', 'MasterJamKerjaController@edit');
 
-Route::get('jabatan', function()
-{
-	return View::make('master.m_jabatan');
-});
+// Master Jabatan
+Route::get('jabatan', 'MasterJabatanController@index');
+Route::post('simpan', 'MasterJabatanController@save');
 
 Route::get('jenisgaji', function()
 {

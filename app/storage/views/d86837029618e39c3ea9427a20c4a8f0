@@ -21,6 +21,8 @@
 
         <?php echo HTML::style('css/jquery.dataTables.min.css'); ?>
 
+        <?php echo HTML::style('font-awesome/css/font-awesome.min.css'); ?>
+
 
     </head>
 

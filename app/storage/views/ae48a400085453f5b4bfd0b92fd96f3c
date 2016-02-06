@@ -1,24 +1,24 @@
-@extends('template.master')
-
-@section('title')
+<?php $__env->startSection('title'); ?>
 <title>ABSENSI - Jabatan</title>
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('header')
+<?php $__env->startSection('header'); ?>
 <h1 class="page-header">Master Data
     <small>JABATAN</small>
 </h1>
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('main')
+<?php $__env->startSection('main'); ?>
 <div class="row">
-    {{ Form::open(array('action' => 'MasterJamKerjaController@create', 'class' => 'form-horizontal')) }}
-    @if(Session::has('mj02_success'))
+    <?php echo Form::open(array('action' => 'MasterJamKerjaController@create', 'class' => 'form-horizontal')); ?>
+
+    <?php if(Session::has('mj02_success')): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <i class="fa fa-info-circle"></i> {{ $mj02_success }}
+        <i class="fa fa-info-circle"></i> <?php echo $mj02_success; ?>
+
     </div>    
-    @endif
+    <?php endif; ?>
     <div class="form-group">
         <label class="col-sm-2 control-label">Nama Jabatan</label>
         <div class="col-sm-4 input-group ">
@@ -41,7 +41,8 @@
         </div>
     </div>
 
-    {{ Form:close() }}
+    <?php echo Form:close(); ?>
+
     <hr>
     <div class="col-sm-6">
         <table class="table" id="datatable">
@@ -64,9 +65,9 @@
         </table>
     </div>
 </div>
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.clockpicker').clockpicker({
@@ -77,7 +78,9 @@
         $('#datatable').DataTable();
     });
 </script> 
-@stop
+<?php $__env->stopSection(); ?>
 
 
 
+
+<?php echo $__env->make('template.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

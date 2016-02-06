@@ -16,6 +16,7 @@
         {{ HTML::style('css/standalone.css') }}
         {{ HTML::style('css/clockpicker.css') }}
         {{ HTML::style('css/jquery.dataTables.min.css') }}
+        {{ HTML::style('font-awesome/css/font-awesome.min.css') }}
 
     </head>
 
