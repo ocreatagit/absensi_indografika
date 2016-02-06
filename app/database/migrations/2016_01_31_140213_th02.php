@@ -14,7 +14,7 @@ class Th02 extends Migration {
         Schema::create('th02', function($table) {
             $table->increments('idph');
             $table->datetime('tglph');
-            $table->string('nilph');
+            $table->bigInteger('nilph');
             $table->integer("idhut")->unsigned();
             $table->timestamps();
         });

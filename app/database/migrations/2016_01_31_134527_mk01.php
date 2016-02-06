@@ -14,6 +14,7 @@ class Mk01 extends Migration {
         //
         Schema::create('mk01', function($table) {
             $table->increments('idkar');
+            $table->integer('abscd');
             $table->string('nama');
             $table->string('usernm');
             $table->string('email');
@@ -21,6 +22,9 @@ class Mk01 extends Migration {
             $table->date('ttl');
             $table->text('addr1');
             $table->tinyInteger("status");
+            $table->text('pic');
+            $table->bigInteger('tbsld');
+            $table->bigInteger('htsld');
             $table->integer('idjb')->unsigned();
             $table->timestamps();
         });

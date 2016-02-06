@@ -14,7 +14,7 @@ class Tt01 extends Migration {
         Schema::create('tt01', function($table) {
             $table->increments('idtb');
             $table->datetime('tgltb');
-            $table->string('niltb');
+            $table->bigInteger('niltb');
             $table->integer("idkar")->unsigned();
             $table->timestamps();
         });

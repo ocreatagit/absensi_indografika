@@ -14,7 +14,8 @@ class Ta02 extends Migration {
         Schema::create('ta02', function($table) {
             $table->integer('idabs')->unsigned();
             $table->integer('idkar')->unsigned();
-            $table->datetime("tglinabs");
+            $table->datetime("tglmsk");
+            $table->tinyInteger("abscd");
             $table->timestamps();
         });
 

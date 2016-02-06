@@ -14,7 +14,7 @@ class Tp01 extends Migration {
         Schema::create('tp01', function($table) {
             $table->increments('idpt');
             $table->datetime('tglpt');
-            $table->string('nilpt');
+            $table->bigInteger('nilpt');
             $table->integer("idkar")->unsigned();
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ class Mz01 extends Migration {
         Schema::create('mz01', function($table) {
             $table->increments('idomzt');
             $table->string('jenomzt');
-            $table->integer('nilomzt');
+            $table->bigInteger('nilomzt');
             $table->timestamps();
         });
     }

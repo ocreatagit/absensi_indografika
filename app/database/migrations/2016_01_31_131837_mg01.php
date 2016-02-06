@@ -15,6 +15,7 @@ class Mg01 extends Migration {
             $table->increments('idgj');
             $table->string('jenis');
             $table->string('status');
+            $table->bigInteger('nilgj');
             $table->timestamps();
         });
     }

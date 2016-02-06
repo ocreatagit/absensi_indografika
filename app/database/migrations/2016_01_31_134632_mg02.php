@@ -15,6 +15,7 @@ class Mg02 extends Migration {
         Schema::create('mg02', function($table) {
             $table->integer('idkar')->unsigned();
             $table->integer('idgj')->unsigned();
+            $table->bigInteger('sldgj');
             $table->timestamps();
         });
 
