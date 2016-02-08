@@ -16,6 +16,7 @@ class Mj02 extends Migration {
             $table->string('tipe');
             $table->time('jmmsk');
             $table->time('jmklr');
+            $table->char('status', 1);
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ class Mj01 extends Migration {
             $table->increments('idjb');
             $table->string('nama');
             $table->char('flgomzt', 1);
+            $table->char('status', 1);
             $table->timestamps();
         });
     }

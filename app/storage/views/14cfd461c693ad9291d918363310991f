@@ -3,7 +3,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('header'); ?>
-<h1 class="page-header">Data Karyawan
+<h1 class="page-header">My Indografika
 </h1>
 <?php $__env->stopSection(); ?>
 

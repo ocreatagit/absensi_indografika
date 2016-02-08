@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/absensi_indografika/app/controllers/MasterJamKerjaController.php</file>
+            <file>file:/C:/xampp/htdocs/absensi_indografika/app/controllers/MasterGajiController.php</file>
+            <file>file:/C:/xampp/htdocs/absensi_indografika/app/views/master/m_jam_kerja.blade.php</file>
+            <file>file:/C:/xampp/htdocs/absensi_indografika/app/routes.php</file>
+            <file>file:/C:/xampp/htdocs/absensi_indografika/app/views/master/m_jenis_gaji.blade.php</file>
+            <file>file:/C:/xampp/htdocs/absensi_indografika/app/models/JamKerjaModel.php</file>
+        </group>
+    </open-files>
+</project-private>

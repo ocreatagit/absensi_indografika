@@ -17,11 +17,17 @@
         {{ HTML::style('css/clockpicker.css') }}
         {{ HTML::style('css/jquery.dataTables.min.css') }}
         {{ HTML::style('font-awesome/css/font-awesome.min.css') }}
-
+        {{ HTML::style('alertifyjs/css/alertify.min.css') }}
+        {{ HTML::style('jquery-ui/jquery-ui.min.css') }}
+        {{-- HTML::style('alertifyjs/css/themes/alertify.min.css') --}}
+        <style type="text/css">
+            .ui-datepicker-year, .ui-datepicker-month{
+                color: black;
+            }
+        </style>
     </head>
 
     <body>
-
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -55,7 +61,12 @@
                             </ul>
                         </li>
                         <li>
-                            {{ HTML::link('myindografika', 'My Indografika')}}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Input Data <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>{{ HTML::link('inputdata/hutang', 'Hutang')}}</li>
+                                <li>{{ HTML::link('inputdata/tabungan', 'Tabungan')}}</li>
+                                <li>{{ HTML::link('inputdata/gaji', 'Gaji')}}</li>
+                            </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Daftar Jam <b class="caret"></b></a>
@@ -71,7 +82,17 @@
                                 </li>
                             </ul>
                         </li>
-
+                        <li>
+                            {{ HTML::link('myindografika', 'My Indografika')}}
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fitur <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>{{ HTML::link('myindografika/gajikaryawan', 'Histori Pembayaran Gaji')}}</li>
+                                <li>{{ HTML::link('myindografika/tabungankaryawan', 'Tabungan Karyawan')}}</li>
+                                <li>{{ HTML::link('myindografika/pinjamankaryawan', 'Laporan Pinjaman Karyawan')}}</li>
+                            </ul>
+                        </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
                 <!-- -->
@@ -92,7 +113,7 @@
 
             <footer>
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 text-center">
                         <p>Copyright &copy; Indografika</p>
                     </div>
                 </div>
@@ -104,6 +125,15 @@
         {{ HTML::script('js/bootstrap.min.js') }}
         {{ HTML::script('js/clockpicker.js') }}
         {{ HTML::script('js/jquery.dataTables.min.js') }}
+        {{ HTML::script('alertifyjs/alertify.min.js') }}
+        {{ HTML::script('jquery-ui/jquery-ui.min.js') }}
+
+        <script>
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+            alertify.defaults.theme.input = "form-control";
+        </script>
 
         @yield('script')
     </body>

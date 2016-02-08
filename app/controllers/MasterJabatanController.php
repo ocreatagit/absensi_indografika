@@ -8,9 +8,16 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function index() {
+        $JabatanModel = new JabatanModel();
         $jabatan = JabatanModel::all();
         $success = Session::get('mj01_success');
-        return View::make('master.m_jabatan')->with('jabatans', $jabatan)->with('mj01_success', $success);
+        $data = array(
+            "jabatan" => $JabatanModel->find(0),
+            "jabatans" => $jabatan,
+            "action" => action("MasterJabatanController@create"),
+            "mj01_success" => $success
+        );
+        return View::make('master.m_jabatan', $data);
     }
 
     /**
@@ -21,28 +28,27 @@ class MasterJabatanController extends \BaseController {
     public function create() {
         // 1. setting validasi
         $messages = array(
-            'required' => 'Inputan Tidak Boleh Kosong!'
+            'required' => 'Inputan <b>Tidak Boleh Kosong</b>!'
         );
 
         $validator = Validator::make(
                         Input::all(), array(
-                    "jmmsk" => "required",
-                    "jmklr" => "required"), $messages
+                    "nama" => "required"), $messages
         );
 
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
-            $jam_kerja = new JamKerjaModel();
-            $jam_kerja->tipe = Input::get('tipe');
-            $jam_kerja->jmmsk = Input::get('jmmsk');
-            $jam_kerja->jmklr = Input::get('jmklr');
-            $jam_kerja->save();
-            Session::flash('mj02_success', 'Data Telah Ditambahkan!');
-            return Redirect::to('jamkerja');
+            $jabatan = new JabatanModel();
+            $jabatan->flgomzt = Input::get('flgomzt') == "Y" ? "Y" : "N";
+            $jabatan->nama = Input::get('nama');
+            $jabatan->status = Input::get('status') == "Y" ? "Y" : "N";
+            $jabatan->save();
+            Session::flash('mj01_success', 'Data Telah Ditambahkan!');
+            return Redirect::to('jabatan');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('jamkerja')
+            return Redirect::to('jabatan')
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -74,7 +80,14 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //
+        $jabatanModel = new JabatanModel();
+        $jabatan = $jabatanModel->find($id);
+        $data = array(
+            "jabatan" => $jabatan,
+            "action" => action("MasterJabatanController@update", $id),
+            "jabatans" => JabatanModel::all()
+        );
+        return View::make('master.m_jabatan', $data);
     }
 
     /**
@@ -84,7 +97,33 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        //
+        // 1. setup validation
+        $messages = array(
+            'required' => 'Inputan <b>Tidak Boleh Kosong</b>!'
+        );
+
+        $validator = Validator::make(
+                        Input::all(), array(
+                    "nama" => "required"), $messages
+        );
+        
+        // 2a. jika semua validasi terpenuhi simpan ke database
+        if ($validator->passes()) {
+            $jabatanModel = new JabatanModel();
+            $jabatan = $jabatanModel->find($id);
+            $jabatan->flgomzt = Input::get('flgomzt') == "Y" ? "Y" : "N";
+            $jabatan->nama = Input::get('nama');
+            $jabatan->status = Input::get('status') == "Y" ? "Y" : "N";
+            $jabatan->save();
+            Session::flash('mj01_success', 'Data Telah Ditambahkan!');
+            return Redirect::to('jabatan');
+        }
+        // 2b. jika tidak, kembali ke halaman form registrasi
+        else {
+            return Redirect::to('jabatan')
+                            ->withErrors($validator)
+                            ->withInput();
+        }
     }
 
     /**
@@ -94,7 +133,10 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        //
+        $jabatan = JabatanModel::find($id);
+        $jabatan->delete();
+        Session::flash('mj01_success', 'Data Telah Di-hapus!');
+        return Redirect::to('jabatan');
     }
 
 }

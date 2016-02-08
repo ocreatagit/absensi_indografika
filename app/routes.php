@@ -20,25 +20,70 @@ Route::get('/', function()
 Route::get('jamkerja', 'MasterJamKerjaController@index');
 Route::post('jamkerja/create', 'MasterJamKerjaController@create');
 Route::get('jamkerja/edit/{id}', 'MasterJamKerjaController@edit');
+Route::post('jamkerja/update/{id}', 'MasterJamKerjaController@update');
+Route::get('jamkerja/delete/{id}', 'MasterJamKerjaController@destroy');
 
 // Master Jabatan
 Route::get('jabatan', 'MasterJabatanController@index');
-Route::post('simpan', 'MasterJabatanController@save');
+Route::post('jabatan/create', 'MasterJabatanController@create');
+Route::get('jabatan/edit/{id}', 'MasterJabatanController@edit');
+Route::post('jabatan/update/{id}', 'MasterJabatanController@update');
+Route::get('jabatan/delete/{id}', 'MasterJabatanController@destroy');
 
-Route::get('jenisgaji', function()
-{
-	return View::make('master.m_jenis_gaji');
-});
+// Master Gaji
+Route::get('jenisgaji', 'MasterGajiController@index');
+Route::post('jenisgaji/create', 'MasterGajiController@create');
+Route::get('jenisgaji/edit/{id}', 'MasterGajiController@edit');
+Route::post('jenisgaji/update/{id}', 'MasterGajiController@update');
+Route::get('jenisgaji/delete/{id}', 'MasterGajiController@destroy');
 
-Route::get('karyawan', function()
-{
-	return View::make('master.m_karyawan');
-});
+// Master Karyawan
+Route::get('karyawan', 'MasterKaryawanController@index');
+Route::post('karyawan/create', 'MasterKaryawanController@create');
+Route::get('karyawan/edit/{id}', 'MasterKaryawanController@edit');
+Route::post('karyawan/update/{id}', 'MasterKaryawanController@update');
+Route::get('karyawan/delete/{id}', 'MasterKaryawanController@destroy');
 
 Route::get('myindografika', function()
 {
 	return View::make('master.my_indografika');
 });
+
+//Fitur
+Route::get('myindografika/gajikaryawan', function()
+{
+	return View::make('master.my_gaji');
+});
+
+Route::get('myindografika/tabungankaryawan', function()
+{
+	return View::make('master.my_tabungan');
+});
+
+Route::get('myindografika/pinjamankaryawan', function()
+{
+	return View::make('master.my_pinjaman');
+});
+
+// end fitur
+
+Route::get('inputdata/hutang', function()
+{
+	return View::make('master.trans_hutang');
+});
+
+Route::get('inputdata/tabungan', function()
+{
+	return View::make('master.trans_tabungan');
+});
+
+Route::get('inputdata/gaji', function()
+{
+	return View::make('master.trans_gaji');
+});
+
+// Input data
+// End Input data
 
 Route::get('daftarmasuk', function()
 {

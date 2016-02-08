@@ -5,7 +5,7 @@
 @stop
 
 @section('header')
-<h1 class="page-header">Data Karyawan
+<h1 class="page-header">My Indografika
 </h1>
 @stop
 
