@@ -39,7 +39,8 @@ Route::get('jenisgaji/delete/{id}', 'MasterGajiController@destroy');
 
 // Master Karyawan
 Route::get('karyawan', 'MasterKaryawanController@index');
-Route::post('karyawan/create', 'MasterKaryawanController@create');
+Route::get('karyawan/create', 'MasterKaryawanController@create');
+Route::post('karyawan/store', 'MasterKaryawanController@store');
 Route::get('karyawan/edit/{id}', 'MasterKaryawanController@edit');
 Route::post('karyawan/update/{id}', 'MasterKaryawanController@update');
 Route::get('karyawan/delete/{id}', 'MasterKaryawanController@destroy');

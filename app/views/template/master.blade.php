@@ -24,6 +24,11 @@
             .ui-datepicker-year, .ui-datepicker-month{
                 color: black;
             }
+            
+            #tambah:hover {
+                background-color: none;
+                color: white;
+            }
         </style>
     </head>
 

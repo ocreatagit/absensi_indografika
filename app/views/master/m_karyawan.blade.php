@@ -112,24 +112,20 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Jam Masuk</label>
                     <div class="col-sm-3 input-group ">
-                        <select class="form-control">
-                            <option>08.00</option>
-                            <option>09.00</option>
+                        <select class="form-control" name="idjk1">
+                            @foreach($jamkerjas as $jamkerja)
+                            <option value="{{ $jamkerja->idjk }}"><?php echo strftime("%H:%M", strtotime($jamkerja->jmmsk)) ?> - <?php echo strftime("%H:%M", strtotime($jamkerja->jmklr)) ?></option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Jam Istirahat</label>
                     <div class="col-sm-3 input-group ">
-                        <input type="text" readonly class="form-control" value="13.00">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Jam Pulang</label>
-                    <div class="col-sm-3 input-group ">
-                        <select class="form-control">
-                            <option>17.00</option>
-                            <option>18.00</option>
+                        <select class="form-control" name="idjk2">
+                            @foreach($jamistirahats as $jamistirahat)
+                            <option value="{{ $jamistirahat->idjk }}"><?php echo strftime("%H:%M", strtotime($jamistirahat->jmmsk)) ?> - <?php echo strftime("%H:%M", strtotime($jamistirahat->jmklr)) ?></option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -146,9 +142,10 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Jenis Gaji</label>
                     <div class="col-sm-3 input-group ">
-                        <select class="form-control">
-                            <option>Gaji Pokok</option>
-                            <option>Gaji Harian</option>
+                        <select class="form-control" name="idgj">
+                            @foreach($gajis as $gaji)
+                            <option value="{{ $gaji->idgj }}">{{ $gaji->jenis }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -161,7 +158,7 @@
             </form>
             <hr>
             <div class="col-sm-6">
-                <table class="table" id="datatable">
+                <table class="table table-bordered table-hover" id="datatable">
                     <thead>
                         <tr>
                             <th class="text-left">Jenis Gaji</th>
@@ -169,14 +166,14 @@
                         </tr>
                     </thead>
                     <tbody class="text-left">
-                        <tr>
+<!--                        <tr>
                             <td>Gaji Pokok</td>
                             <td>Rp. <?php echo number_format(800000, 0, ',', '.') ?>,-</td>
                         </tr>
                         <tr>
                             <td>Gaji Harian</td>
                             <td>Rp. <?php echo number_format(75000, 0, ',', '.') ?>,-</td>
-                        </tr>
+                        </tr>-->
                     </tbody>
                 </table>
             </div>
