@@ -16,13 +16,19 @@
         <div class="panel-heading">
             <a id="tambah" href="{{ action('MasterKaryawanController@create') }}" class="btn btn-primary"><i class="fa fa-plus-square"></i> Tambah Karyawan</a>
         </div>
+        @if(Session::has('mk01_success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <i class="fa fa-info-circle"></i> {{ $mk01_success }}
+        </div>    
+        @endif
         <div class="panel-body">
             <div class="col-sm-12">
                 <table class="table table-bordered table-hover" id="datatable">
                     <thead>
                         <tr>
                             <th class="text-left">No</th>
-                            <th class="text-left">Gambar</th>
+                            <th class="text-left">Foto</th>
                             <th class="text-left">Nama</th>
                             <th class="text-left">Username</th>
                             <th class="text-left">Jabatan</th>
@@ -38,7 +44,7 @@
                         @foreach($karyawans as $karyawan)
                         <tr>
                             <td>{{ $no }}</td>
-                            <td>{{ $karyawan->pic }}</td>
+                            <td><img src="uploads/{{ $karyawan->pic }}" class="thumbnail" width="200"/></td>
                             <td>{{ $karyawan->nama }}</td>
                             <td>{{ $karyawan->usernm }}</td>
                             <td>{{ $karyawan->idjb }}</td>
@@ -47,8 +53,8 @@
                             <td>{{ $karyawan->tbsld }} <br> {{ $karyawan->htsld }}</td>
                             <td>{{ $karyawan->status == 'N' ? 'Tidak Aktif' : 'Aktif'; $no++; }}</td>
                             <td class="text-center">
-                                <a href="{{ action('MasterKaryawanController@edit', $karyawan->idjb) }}" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Edit Data?"><i class="fa fa-edit"></i></a>
-                                <a href="{{ action('MasterKaryawanController@destroy', $karyawan->idjb) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
+                                <a href="{{ action('MasterKaryawanController@edit', $karyawan->idkar) }}" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Edit Data?"><i class="fa fa-edit"></i></a>
+                                <a href="{{ action('MasterKaryawanController@destroy', $karyawan->idkar) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach

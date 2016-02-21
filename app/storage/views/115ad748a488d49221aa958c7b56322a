@@ -14,13 +14,20 @@
         <div class="panel-heading">
             <a id="tambah" href="<?php echo action('MasterKaryawanController@create'); ?>" class="btn btn-primary"><i class="fa fa-plus-square"></i> Tambah Karyawan</a>
         </div>
+        <?php if(Session::has('mk01_success')): ?>
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <i class="fa fa-info-circle"></i> <?php echo $mk01_success; ?>
+
+        </div>    
+        <?php endif; ?>
         <div class="panel-body">
             <div class="col-sm-12">
                 <table class="table table-bordered table-hover" id="datatable">
                     <thead>
                         <tr>
                             <th class="text-left">No</th>
-                            <th class="text-left">Gambar</th>
+                            <th class="text-left">Foto</th>
                             <th class="text-left">Nama</th>
                             <th class="text-left">Username</th>
                             <th class="text-left">Jabatan</th>
@@ -36,7 +43,7 @@
                         <?php foreach($karyawans as $karyawan): ?>
                         <tr>
                             <td><?php echo $no; ?></td>
-                            <td><?php echo $karyawan->pic; ?></td>
+                            <td><img src="uploads/<?php echo $karyawan->pic; ?>" class="thumbnail" width="200"/></td>
                             <td><?php echo $karyawan->nama; ?></td>
                             <td><?php echo $karyawan->usernm; ?></td>
                             <td><?php echo $karyawan->idjb; ?></td>
@@ -45,8 +52,8 @@
                             <td><?php echo $karyawan->tbsld; ?> <br> <?php echo $karyawan->htsld; ?></td>
                             <td><?php echo $karyawan->status == 'N' ? 'Tidak Aktif' : 'Aktif'; $no++;; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo action('MasterKaryawanController@edit', $karyawan->idjb); ?>" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Edit Data?"><i class="fa fa-edit"></i></a>
-                                <a href="<?php echo action('MasterKaryawanController@destroy', $karyawan->idjb); ?>" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
+                                <a href="<?php echo action('MasterKaryawanController@edit', $karyawan->idkar); ?>" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Edit Data?"><i class="fa fa-edit"></i></a>
+                                <a href="<?php echo action('MasterKaryawanController@destroy', $karyawan->idkar); ?>" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

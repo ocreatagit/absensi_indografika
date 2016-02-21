@@ -14,14 +14,18 @@ class Mk01 extends Migration {
         //
         Schema::create('mk01', function($table) {
             $table->increments('idkar');
-            $table->integer('abscd');
             $table->string('nama');
             $table->string('usernm');
             $table->string('email');
             $table->string('passwd');
+            $table->char('gndr', 1);
+            $table->char('norek1', 25);
+            $table->char('norek2', 25);
+            $table->date('tglaktif');
             $table->date('ttl');
             $table->text('addr1');
-            $table->tinyInteger("status");
+            $table->text('notelp');
+            $table->char("status", 1);
             $table->text('pic');
             $table->bigInteger('tbsld');
             $table->bigInteger('htsld');

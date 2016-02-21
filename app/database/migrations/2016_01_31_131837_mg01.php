@@ -14,7 +14,7 @@ class Mg01 extends Migration {
         Schema::create('mg01', function($table) {
             $table->increments('idgj');
             $table->string('jenis');
-            $table->string('status');
+            $table->char('status', 1);
             $table->timestamps();
         });
     }

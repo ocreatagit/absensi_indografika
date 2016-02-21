@@ -13,6 +13,12 @@
 @section('main')
 <div class="row">
     <form class="form-horizontal" action="{{ $action }}" method="POST">
+        @if(Session::has('mg01_success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <i class="fa fa-info-circle"></i> {{ $mg01_success }}
+        </div>    
+        @endif
         <div class="form-group">
             <label class="col-sm-2 control-label">Jenis Gaji</label>
             <div class="col-sm-4">
@@ -45,7 +51,6 @@
                 </div>
             </div>
         </div>
-
     </form>
     <hr>
     <div class="col-sm-8 col-sm-offset-2">
