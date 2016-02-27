@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
-
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-
+        
         @yield('title')
 
         {{ HTML::style('css/bootstrap.min.css') }}
@@ -24,7 +22,6 @@
             .ui-datepicker-year, .ui-datepicker-month{
                 color: black;
             }
-
             #tambah:hover {
                 background-color: none;
                 color: white;
@@ -98,7 +95,9 @@
                                 <li>{{ HTML::link('myindografika/pinjamankaryawan', 'Laporan Pinjaman Karyawan')}}</li>
                             </ul>
                         </li>
-                </ul>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                <!-- -->
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -106,7 +105,6 @@
     </nav>
 
         <div class="container">
-
             <div class="row">
                 <div class="col-lg-12">
                     @yield('header')
