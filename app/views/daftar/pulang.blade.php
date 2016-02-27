@@ -1,19 +1,19 @@
 @extends('template.master')
 
 @section('title')
-<title>ABSENSI - Jabatan</title>
+<title>ABSENSI - Daftar Pulang</title>
 @stop
 
 @section('header')
 <h1 class="page-header">
     Daftar Pulang Kerja Karyawan
+    <span id="timeServer" class="pull-right">{{ date('d-M-Y H:i:s') }}</span>
 </h1>
 @stop
 
 @section('main')
 <div class="row">
-    <h3>18/01/2016 | 08:34:56</h3>
-    <table class="table table-bordered">
+    <table id="datatable" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <td>No Absen</td>
@@ -22,13 +22,7 @@
                 <td>Login jam pulang</td>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>2345</td>
-                <td>Tuti</td>
-                <td>17:30</td>
-                <td>17:32</td>
-            </tr>
+        <tbody id="tblpulang">
         </tbody>
     </table>
 </div>
@@ -42,8 +36,29 @@
             align: 'left',
             donetext: 'Done'
         });
-        $('#datatable').DataTable();
+        $('#datatable').DataTable({
+            "bInfo": false
+        });
     });
+    
+    setInterval(function () {
+        $.get('<?php echo action('DaftarController@getTimeServer') ?>', function (data) {
+            $('#timeServer').html(data);
+        });    
+        
+        $.getJSON('<?php echo action('DaftarController@getDaftarPulang') ?>', function (data) {
+            var str = "";
+            $.each(data, function (key, val) {
+                str += "<tr>";
+                str += "<td>" + val.idkar + "</td>";
+                str += "<td>" + val.nama + "</td>";
+                str += "<td>" + val.jmmsk + "</td>";
+                str += "<td>" + val.tglmsk + "</td>";
+                str += "</tr>";
+            });
+            $("#tblpulang").html(str);
+        });
+    }, 1000);
 </script> 
 @stop
 

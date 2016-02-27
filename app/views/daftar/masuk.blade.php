@@ -1,19 +1,19 @@
 @extends('template.master')
 
 @section('title')
-<title>ABSENSI - Jabatan</title>
+<title>ABSENSI - Daftar Masuk</title>
 @stop
 
 @section('header')
 <h1 class="page-header">
     Daftar Masuk Kerja Karyawan
+    <span id="timeServer" class="pull-right">{{ date('d-M-Y H:i:s') }}</span>
 </h1>
 @stop
 
 @section('main')
-<div class="row">
-    <h3>18/01/2016 | 08:34:56</h3>
-    <table class="table table-bordered">
+<div class="row">    
+    <table id="datatable" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <td>No Absen</td>
@@ -23,14 +23,7 @@
                 <td>Keterlambatan</td>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>2345</td>
-                <td>Tuti</td>
-                <td>08:30</td>
-                <td>08:29</td>
-                <td>0</td>
-            </tr>
+        <tbody id="tblMasuk">
         </tbody>
     </table>
 </div>
@@ -44,9 +37,31 @@
             align: 'left',
             donetext: 'Done'
         });
-        $('#datatable').DataTable();
+        $('#datatable').DataTable({
+            "bInfo": false
+        });
+
     });
-</script> 
+    setInterval(function () {
+        $.get('<?php echo action('DaftarController@getTimeServer') ?>', function (data) {
+            $('#timeServer').html(data);
+        });
+        //ambil data dari json
+        $.getJSON('<?php echo action('DaftarController@getDaftarMasuk') ?>', function (data) {
+            var str = "";
+            $.each(data, function (key, val) {
+                str += "<tr>";
+                str += "<td>" + val.idkar + "</td>";
+                str += "<td>" + val.nama + "</td>";
+                str += "<td>" + val.jmmsk + "</td>";
+                str += "<td>" + val.tglmsk + "</td>";
+                str += "<td>" + val.lbt + " menit</td>";
+                str += "</tr>";
+            });
+            $("#tblMasuk").html(str);
+        });
+    }, 900);
+</script>
 @stop
 
 

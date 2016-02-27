@@ -1,19 +1,18 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
+  |--------------------------------------------------------------------------
+  | Application Routes
+  |--------------------------------------------------------------------------
+  |
+  | Here is where you can register all of the routes for an application.
+  | It's a breeze. Simply tell Laravel the URIs it should respond to
+  | and give it the Closure to execute when that URI is requested.
+  |
+ */
 
-Route::get('/', function()
-{
-	return View::make('hello');
+Route::get('/', function() {
+    return View::make('hello');
 });
 
 // Master Jam Kerja
@@ -45,58 +44,62 @@ Route::get('karyawan/edit/{id}', 'MasterKaryawanController@edit');
 Route::post('karyawan/update/{id}', 'MasterKaryawanController@update');
 Route::get('karyawan/delete/{id}', 'MasterKaryawanController@destroy');
 
-Route::get('myindografika', function()
-{
-	return View::make('master.my_indografika');
+Route::get('myindografika', function() {
+    return View::make('master.my_indografika');
 });
 
 //Fitur
-Route::get('myindografika/gajikaryawan', function()
-{
-	return View::make('master.my_gaji');
+Route::get('myindografika/gajikaryawan', function() {
+    return View::make('master.my_gaji');
 });
 
-Route::get('myindografika/tabungankaryawan', function()
-{
-	return View::make('master.my_tabungan');
+Route::get('myindografika/tabungankaryawan', function() {
+    return View::make('master.my_tabungan');
 });
 
-Route::get('myindografika/pinjamankaryawan', function()
-{
-	return View::make('master.my_pinjaman');
+Route::get('myindografika/pinjamankaryawan', function() {
+    return View::make('master.my_pinjaman');
 });
 
 // end fitur
 
-Route::get('inputdata/hutang', function()
-{
-	return View::make('master.trans_hutang');
+Route::get('inputdata/hutang', function() {
+    return View::make('master.trans_hutang');
 });
 
-Route::get('inputdata/tabungan', function()
-{
-	return View::make('master.trans_tabungan');
+Route::get('inputdata/tabungan', function() {
+    return View::make('master.trans_tabungan');
 });
 
-Route::get('inputdata/gaji', function()
-{
-	return View::make('master.trans_gaji');
+Route::get('inputdata/gaji', function() {
+    return View::make('master.trans_gaji');
 });
 
 // Input data
 // End Input data
 
-Route::get('daftarmasuk', function()
-{
-	return View::make('daftar.masuk');
+Route::get('daftarmasuk', function() {
+    date_default_timezone_set('Asia/Jakarta');
+    return View::make('daftar.masuk');
+});
+Route::get('getTimeServer', 'DaftarController@getTimeServer');
+Route::get('getDateServer', 'DaftarController@getDateServer');
+Route::get('getDaftarMasuk', 'DaftarController@getDaftarMasuk');
+
+Route::get('daftarpulang', function() {
+    date_default_timezone_set('Asia/Jakarta');
+    return View::make('daftar.pulang');
+});
+Route::get('getDaftarPulang', 'DaftarController@getDaftarPulang');
+
+Route::get('daftarlembur', function() {
+    date_default_timezone_set('Asia/Jakarta');
+    return View::make('daftar.lembur');
 });
 
-Route::get('daftarpulang', function()
-{
-	return View::make('daftar.pulang');
+Route::get('absen', function() {
+    return View::make('absen');
 });
 
-Route::get('daftarlembur', function()
-{
-	return View::make('daftar.lembur');
-});
+Route::get('getAbsen', 'HomeController@getAbsen');
+

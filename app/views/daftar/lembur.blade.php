@@ -1,19 +1,20 @@
 @extends('template.master')
 
 @section('title')
-<title>ABSENSI - Jabatan</title>
+<title>ABSENSI - Daftar Lembur</title>
 @stop
 
 @section('header')
 <h1 class="page-header">
     Daftar Lembur Kerja Karyawan
+    <span class="pull-right">{{ date('d F Y') }}</span>
 </h1>
 @stop
 
 @section('main')
 <div class="row">
-    <h3>18/01/2016 | 08:34:56</h3>
-    <table class="table table-bordered">
+    <h1 style="margin-bottom: 50px;" class="pull-right"><span id="timeServer">{{ date('H:i:s') }}</span></h1>
+    <table id="datatable" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <td>No Absen</td>
@@ -23,14 +24,7 @@
                 <td>Total Jam</td>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>2345</td>
-                <td>Tuti</td>
-                <td>18:00</td>
-                <td>19:30</td>
-                <td>1,5 jam</td>
-            </tr>
+        <tbody id="tbllembur">
         </tbody>
     </table>
 </div>
@@ -44,8 +38,16 @@
             align: 'left',
             donetext: 'Done'
         });
-        $('#datatable').DataTable();
+        $('#datatable').DataTable({
+            "bInfo": false
+        });
     });
+
+    setInterval(function () {
+        $.get('<?php echo action('DaftarController@getTimeServer') ?>', function (data) {
+            $('#timeServer').html(data);
+        });    
+    }, 900);
 </script> 
 @stop
 

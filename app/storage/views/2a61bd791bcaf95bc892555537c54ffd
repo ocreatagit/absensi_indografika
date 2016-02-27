@@ -1,17 +1,18 @@
 <?php $__env->startSection('title'); ?>
-<title>ABSENSI - Jabatan</title>
+<title>ABSENSI - Daftar Lembur</title>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('header'); ?>
 <h1 class="page-header">
     Daftar Lembur Kerja Karyawan
+    <span class="pull-right"><?php echo date('d F Y'); ?></span>
 </h1>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('main'); ?>
 <div class="row">
-    <h3>18/01/2016 | 08:34:56</h3>
-    <table class="table table-bordered">
+    <h1 style="margin-bottom: 50px;" class="pull-right"><span id="timeServer"><?php echo date('H:i:s'); ?></span></h1>
+    <table id="datatable" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <td>No Absen</td>
@@ -21,14 +22,7 @@
                 <td>Total Jam</td>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>2345</td>
-                <td>Tuti</td>
-                <td>18:00</td>
-                <td>19:30</td>
-                <td>1,5 jam</td>
-            </tr>
+        <tbody id="tbllembur">
         </tbody>
     </table>
 </div>
@@ -42,8 +36,17 @@
             align: 'left',
             donetext: 'Done'
         });
-        $('#datatable').DataTable();
+        $('#datatable').DataTable({
+            "bInfo": false
+        });
     });
+
+    setInterval(function () {
+        $.get('<?php echo action('DaftarController@getTimeServer') ?>', function (data) {
+            $('#timeServer').html(data);
+        });
+        //ambil data dari json        
+    }, 900);
 </script> 
 <?php $__env->stopSection(); ?>
 
