@@ -12,14 +12,12 @@ class Mj03 extends Migration {
      */
     public function up() {
         Schema::create('mj03', function($table) {
-            $table->integer('idjk')->unsigned();
-            $table->integer('idkar')->unsigned();
+            $table->increments('id');
+            $table->integer('mj02_id')->unsigned();
+            $table->foreign('mj02_id')->references('idjk')->on('mj02');
+            $table->integer('mk01_id')->unsigned();
+            $table->foreign('mk01_id')->references('idkar')->on('mk01');
             $table->timestamps();
-        });
-
-        Schema::table('mj03', function($table) {
-            $table->foreign('idjk')->references('idjk')->on('mj02');
-            $table->foreign('idkar')->references('idkar')->on('mk01');
         });
     }
 

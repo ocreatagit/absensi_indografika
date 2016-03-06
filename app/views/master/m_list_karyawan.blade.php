@@ -33,7 +33,6 @@
                             <th class="text-left">Username</th>
                             <th class="text-left">Jabatan</th>
                             <th class="text-left">Tanggal Lahir</th>
-                            <th class="text-left">Alamat</th>
                             <th class="text-left">Saldo</th>                            
                             <th class="text-left">Status</th>                            
                             <th class="text-left">Opsi</th>
@@ -44,15 +43,27 @@
                         @foreach($karyawans as $karyawan)
                         <tr>
                             <td>{{ $no }}</td>
-                            <td><img src="uploads/{{ $karyawan->pic }}" class="thumbnail" width="200"/></td>
+                            <td><a href="{{ url("uploads/".$karyawan->pic) }}" data-lightbox="roadtrip"> {{ $karyawan->pic != "" ? HTML::image('uploads/'.$karyawan->pic, $karyawan->nama, array('class' => 'thumbnail', "width" => 180)) : HTML::image('uploads/no_image.png', "No Image", array('class' => 'thumbnail', "width" => 180)) }} </a> </td>
                             <td>{{ $karyawan->nama }}</td>
                             <td>{{ $karyawan->usernm }}</td>
-                            <td>{{ $karyawan->idjb }}</td>
-                            <td>{{ $karyawan->ttl }}</td>
-                            <td>{{ $karyawan->addr1 }}</td>
-                            <td>{{ $karyawan->tbsld }} <br> {{ $karyawan->htsld }}</td>
-                            <td>{{ $karyawan->status == 'N' ? 'Tidak Aktif' : 'Aktif'; $no++; }}</td>
-                            <td class="text-center">
+                            <td>{{ $karyawan->mj01->nama }}</td>
+                            <td>{{ strftime("%d-%b-%Y", strtotime($karyawan->ttl)) }}</td>
+                            <td width="35%">
+                                <div class="row">
+                                    <div class="col-lg-6 text-right">Tabungan : </div>
+                                    <div class="col-lg-6 text-right">Rp.{{ number_format($karyawan->tbsld, 0, ",", ".") }},-</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right">Hutang : </div>
+                                    <div class="col-lg-6 text-right">Rp.{{ number_format($karyawan->htsld, 0, ",", ".") }},-</div>
+                                </div>
+                            </td>
+                            <td class="text-center" width="15%">
+                                {{ $karyawan->status == 'N' ? '<font color="red">Tidak Aktif</font>' : '<font color="green">Aktif</font>'; $no++; }} <a href="{{ action('MasterKaryawanController@changeStatus', $karyawan->idkar) }}" data-toggle="tooltip" data-placement="left" title="Change Status?">{{ $karyawan->status == 'N' ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>' }}</a>
+                                <!--<br>-->
+                                <!--<a href="{{ action('MasterKaryawanController@changeStatus', $karyawan->idkar) }}" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Change Status?">{{ $karyawan->status == 'N' ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>' }}</a>-->
+                            </td>
+                            <td class="text-center" width="15%">
                                 <a href="{{ action('MasterKaryawanController@edit', $karyawan->idkar) }}" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Edit Data?"><i class="fa fa-edit"></i></a>
                                 <a href="{{ action('MasterKaryawanController@destroy', $karyawan->idkar) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
                             </td>

@@ -16,33 +16,40 @@ Route::get('/', function() {
 });
 
 // Master Jam Kerja
-Route::get('jamkerja', 'MasterJamKerjaController@index');
-Route::post('jamkerja/create', 'MasterJamKerjaController@create');
-Route::get('jamkerja/edit/{id}', 'MasterJamKerjaController@edit');
-Route::post('jamkerja/update/{id}', 'MasterJamKerjaController@update');
-Route::get('jamkerja/delete/{id}', 'MasterJamKerjaController@destroy');
+Route::get('master/jamkerja', 'MasterJamKerjaController@index');
+Route::post('master/jamkerja/create', 'MasterJamKerjaController@create');
+Route::get('master/jamkerja/edit/{id}', 'MasterJamKerjaController@edit');
+Route::post('master/jamkerja/update/{id}', 'MasterJamKerjaController@update');
+Route::get('master/jamkerja/delete/{id}', 'MasterJamKerjaController@destroy');
 
 // Master Jabatan
-Route::get('jabatan', 'MasterJabatanController@index');
-Route::post('jabatan/create', 'MasterJabatanController@create');
-Route::get('jabatan/edit/{id}', 'MasterJabatanController@edit');
-Route::post('jabatan/update/{id}', 'MasterJabatanController@update');
-Route::get('jabatan/delete/{id}', 'MasterJabatanController@destroy');
+Route::get('master/jabatan', 'MasterJabatanController@index');
+Route::post('master/jabatan/create', 'MasterJabatanController@create');
+Route::get('master/jabatan/edit/{id}', 'MasterJabatanController@edit');
+Route::post('master/jabatan/update/{id}', 'MasterJabatanController@update');
+Route::get('master/jabatan/delete/{id}', 'MasterJabatanController@destroy');
 
 // Master Gaji
-Route::get('jenisgaji', 'MasterGajiController@index');
-Route::post('jenisgaji/create', 'MasterGajiController@create');
-Route::get('jenisgaji/edit/{id}', 'MasterGajiController@edit');
-Route::post('jenisgaji/update/{id}', 'MasterGajiController@update');
-Route::get('jenisgaji/delete/{id}', 'MasterGajiController@destroy');
+Route::get('master/jenisgaji', 'MasterGajiController@index');
+Route::post('master/jenisgaji/create', 'MasterGajiController@create');
+Route::get('master/jenisgaji/edit/{id}', 'MasterGajiController@edit');
+Route::post('master/jenisgaji/update/{id}', 'MasterGajiController@update');
+Route::get('master/jenisgaji/delete/{id}', 'MasterGajiController@destroy');
 
 // Master Karyawan
-Route::get('karyawan', 'MasterKaryawanController@index');
-Route::get('karyawan/create', 'MasterKaryawanController@create');
-Route::post('karyawan/store', 'MasterKaryawanController@store');
-Route::get('karyawan/edit/{id}', 'MasterKaryawanController@edit');
-Route::post('karyawan/update/{id}', 'MasterKaryawanController@update');
-Route::get('karyawan/delete/{id}', 'MasterKaryawanController@destroy');
+Route::get('master/karyawan', 'MasterKaryawanController@index');
+Route::get('master/karyawan/create', 'MasterKaryawanController@create');
+Route::post('master/karyawan/store', 'MasterKaryawanController@store');
+Route::get('master/karyawan/edit/{id}', 'MasterKaryawanController@edit');
+Route::post('master/karyawan/update/{id}', 'MasterKaryawanController@update');
+Route::get('master/karyawan/delete/{id}', 'MasterKaryawanController@destroy');
+Route::get('master/karyawan/change_status/{id}', 'MasterKaryawanController@changeStatus');
+Route::get('master/karyawan/add_gaji/{id}', 'MasterKaryawanController@addGaji');
+Route::post('master/karyawan/insert_item_gaji/{id}', 'MasterKaryawanController@saveItemGaji');
+Route::get('master/karyawan/delete_item_gaji/{rowid}/{id}', 'MasterKaryawanController@deleteItemGaji');
+Route::get('master/karyawan/save_gaji', 'MasterKaryawanController@saveGaji');
+Route::post('master/karyawan/save_karyawan_gaji', 'MasterKaryawanController@saveKaryawanGaji');
+Route::get('master/karyawan/delete_karyawan_gaji/{id}', 'MasterKaryawanController@deleteKaryawanGaji');
 
 Route::get('myindografika', function() {
     return View::make('master.my_indografika');
@@ -62,17 +69,15 @@ Route::get('myindografika/pinjamankaryawan', function() {
 });
 
 // end fitur
-
-Route::get('inputdata/hutang', function() {
-    return View::make('master.trans_hutang');
-});
+// Transaksi Hutang
+Route::get('inputdata/hutang', "TransaksiHutangController@index");
 
 Route::get('inputdata/tabungan', function() {
-    return View::make('master.trans_tabungan');
+    return View::make('transaksi.trans_tabungan');
 });
 
 Route::get('inputdata/gaji', function() {
-    return View::make('master.trans_gaji');
+    return View::make('transaksi.trans_gaji');
 });
 
 // Input data
@@ -97,9 +102,9 @@ Route::get('daftarlembur', function() {
     return View::make('daftar.lembur');
 });
 
+
 Route::get('absen', function() {
     return View::make('absen');
 });
 
 Route::get('getAbsen', 'HomeController@getAbsen');
-

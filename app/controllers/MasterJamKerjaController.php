@@ -8,11 +8,11 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $JamKerjaModel = new JamKerjaModel();
-        $jam_kerja = JamKerjaModel::all();
+        $mj02 = new mj02();
+        $jam_kerja = mj02::all();
         $success = Session::get('mj02_success');
         $data = array(
-            "jam_kerja" => $JamKerjaModel->find(0),
+            "jam_kerja" => $mj02->find(0),
             "jam_kerjas" => $jam_kerja,
             "action" => action("MasterJamKerjaController@create"),
             "mj02_success" => $success
@@ -39,18 +39,18 @@ class MasterJamKerjaController extends \BaseController {
 
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
-            $jam_kerja = new JamKerjaModel();
+            $jam_kerja = new mj02();
             $jam_kerja->tipe = Input::get('tipe');
             $jam_kerja->jmmsk = Input::get('jmmsk');
             $jam_kerja->jmklr = Input::get('jmklr');
             $jam_kerja->status = Input::get('status') == "Y" ? "Y" : "N";
             $jam_kerja->save();
             Session::flash('mj02_success', 'Data Telah Ditambahkan!');
-            return Redirect::to('jamkerja');
+            return Redirect::to('master/jamkerja');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('jamkerja')
+            return Redirect::to('master/jamkerja')
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -82,12 +82,12 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $JamKerjaModel = new JamKerjaModel();
-        $jam_kerja = $JamKerjaModel->find($id);
+        $mj02 = new mj02();
+        $jam_kerja = $mj02->find($id);
         $data = array(
             "jam_kerja" => $jam_kerja,
             "action" => action("MasterJamKerjaController@update", $id),
-            "jam_kerjas" => JamKerjaModel::all()
+            "jam_kerjas" => mj02::all()
         );
         return View::make('master.m_jam_kerja', $data);
     }
@@ -112,19 +112,19 @@ class MasterJamKerjaController extends \BaseController {
 
         // 2a. no error validaion
         if ($validator->passes()) {
-            $JamKerjaModel = new JamKerjaModel();
-            $jam_kerja = $JamKerjaModel->find($id);
+            $mj02 = new mj02();
+            $jam_kerja = $mj02->find($id);
             $jam_kerja->tipe = Input::get('tipe');
             $jam_kerja->jmmsk = Input::get('jmmsk');
             $jam_kerja->jmklr = Input::get('jmklr');
             $jam_kerja->status = Input::get('status') == "Y" ? "Y" : "N";
             $jam_kerja->save();
             Session::flash('mj02_success', 'Data Telah Di-ubah!');
-            return Redirect::to('jamkerja');
+            return Redirect::to('master/jamkerja');
         }
         // 2b. error validation
         else {
-            return Redirect::to('jamkerja/edit/' . $id)
+            return Redirect::to('master/jamkerja/edit/' . $id)
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -137,10 +137,10 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        $jam_kerja = JamKerjaModel::find($id);
+        $jam_kerja = mj02::find($id);
         $jam_kerja->delete();
         Session::flash('mj02_success', 'Data Telah Di-hapus!');
-        return Redirect::to('jamkerja');
+        return Redirect::to('master/jamkerja');
     }
 
 }

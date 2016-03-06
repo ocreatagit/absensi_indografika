@@ -8,11 +8,11 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $JabatanModel = new JabatanModel();
-        $jabatan = JabatanModel::all();
+        $mj01 = new mj01();
+        $jabatan = mj01::all();
         $success = Session::get('mj01_success');
         $data = array(
-            "jabatan" => $JabatanModel->find(0),
+            "jabatan" => $mj01->find(0),
             "jabatans" => $jabatan,
             "action" => action("MasterJabatanController@create"),
             "mj01_success" => $success
@@ -38,17 +38,17 @@ class MasterJabatanController extends \BaseController {
 
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
-            $jabatan = new JabatanModel();
+            $jabatan = new mj01();
             $jabatan->flgomzt = Input::get('flgomzt') == "Y" ? "Y" : "N";
             $jabatan->nama = Input::get('nama');
             $jabatan->status = Input::get('status') == "Y" ? "Y" : "N";
             $jabatan->save();
             Session::flash('mj01_success', 'Data Telah Ditambahkan!');
-            return Redirect::to('jabatan');
+            return Redirect::to('master/jabatan');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('jabatan')
+            return Redirect::to('master/jabatan')
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -80,12 +80,12 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $jabatanModel = new JabatanModel();
-        $jabatan = $jabatanModel->find($id);
+        $jabatan = new mj01();
+        $jabatan = $jabatan->find($id);
         $data = array(
             "jabatan" => $jabatan,
             "action" => action("MasterJabatanController@update", $id),
-            "jabatans" => JabatanModel::all()
+            "jabatans" => mj01::all()
         );
         return View::make('master.m_jabatan', $data);
     }
@@ -109,18 +109,18 @@ class MasterJabatanController extends \BaseController {
         
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
-            $jabatanModel = new JabatanModel();
-            $jabatan = $jabatanModel->find($id);
+            $jabatan = new mj01();
+            $jabatan = $jabatan->find($id);
             $jabatan->flgomzt = Input::get('flgomzt') == "Y" ? "Y" : "N";
             $jabatan->nama = Input::get('nama');
             $jabatan->status = Input::get('status') == "Y" ? "Y" : "N";
             $jabatan->save();
             Session::flash('mj01_success', 'Data Telah Ditambahkan!');
-            return Redirect::to('jabatan');
+            return Redirect::to('master/jabatan');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('jabatan')
+            return Redirect::to('master/jabatan')
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -133,10 +133,10 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        $jabatan = JabatanModel::find($id);
+        $jabatan = mj01::find($id);
         $jabatan->delete();
         Session::flash('mj01_success', 'Data Telah Di-hapus!');
-        return Redirect::to('jabatan');
+        return Redirect::to('master/jabatan');
     }
 
 }

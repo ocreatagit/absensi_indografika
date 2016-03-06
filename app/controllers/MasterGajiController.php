@@ -8,11 +8,11 @@ class MasterGajiController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $GajiModel = new GajiModel();
-        $gaji = GajiModel::all();
+        $mg01 = new mg01();
+        $gaji = mg01::all();
         $success = Session::get('mg01_success');
         $data = array(
-            "gaji" => $GajiModel->find(0),
+            "gaji" => $mg01->find(0),
             "gajis" => $gaji,
             "action" => action("MasterGajiController@create"),
             "mg01_success" => $success
@@ -38,16 +38,16 @@ class MasterGajiController extends \BaseController {
 
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
-            $gaji = new GajiModel();
+            $gaji = new mg01();
             $gaji->jenis = Input::get('jenis');
             $gaji->status = Input::get('status') == "Y" ? "Y" : "N";
             $gaji->save();
             Session::flash('mg01_success', 'Data Telah Ditambahkan!');
-            return Redirect::to('jenisgaji');
+            return Redirect::to('master/jenisgaji');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('jenisgaji')
+            return Redirect::to('master/jenisgaji')
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -79,10 +79,10 @@ class MasterGajiController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $GajiModel = new GajiModel();
-        $gaji = GajiModel::all();
+        $mg01 = new mg01();
+        $gaji = mg01::all();
         $data = array(
-            "gaji" => $GajiModel->find($id),
+            "gaji" => $mg01->find($id),
             "gajis" => $gaji,
             "action" => action("MasterGajiController@update", $id)
         );
@@ -108,17 +108,17 @@ class MasterGajiController extends \BaseController {
 
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
-            $GajiModel = new GajiModel();
-            $gaji = $GajiModel::find($id);
+            $mg01 = new mg01();
+            $gaji = $mg01::find($id);
             $gaji->jenis = Input::get('jenis');
             $gaji->status = Input::get('status') == "Y" ? "Y" : "N";
             $gaji->save();
             Session::flash('mg01_success', 'Data Telah Ditambahkan!');
-            return Redirect::to('jenisgaji');
+            return Redirect::to('master/jenisgaji');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('jenisgaji')
+            return Redirect::to('master/jenisgaji')
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -131,10 +131,10 @@ class MasterGajiController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        $Gaji = GajiModel::find($id);
-        $Gaji->delete();
+        $mg01 = mg01::find($id);
+        $mg01->delete();
         Session::flash('mg01_success', 'Data Telah Di-hapus!');
-        return Redirect::to('jenisgaji');
+        return Redirect::to('master/jenisgaji');
     }
 
 }
