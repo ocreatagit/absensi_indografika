@@ -5,7 +5,7 @@
 <?php $__env->startSection('header'); ?>
 <h1 class="page-header">
     Daftar Masuk Kerja Karyawan
-    <span id="timeServer" class="pull-right"><?php echo date('d-m-Y H:i:s'); ?></span>
+    <span id="timeServer" class="pull-right"><?php echo date('d-M-Y H:i:s'); ?></span>
 </h1>
 <?php $__env->stopSection(); ?>
 

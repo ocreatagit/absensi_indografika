@@ -12,16 +12,14 @@ class Ta02 extends Migration {
      */
     public function up() {
         Schema::create('ta02', function($table) {
-            $table->integer('idabs')->unsigned();
-            $table->integer('idkar')->unsigned();
+            $table->increments('id');
+            $table->integer('ta01_id')->unsigned();
+            $table->foreign('ta01_id')->references('idabs')->on('ta01');
+            $table->integer('mk01_id')->unsigned();
+            $table->foreign('mk01_id')->references('idkar')->on('mk01');
             $table->datetime("tglmsk");
             $table->tinyInteger("abscd");
             $table->timestamps();
-        });
-
-        Schema::table('ta02', function($table) {
-            $table->foreign('idabs')->references('idabs')->on('ta01');
-            $table->foreign('idkar')->references('idkar')->on('mk01');
         });
     }
 

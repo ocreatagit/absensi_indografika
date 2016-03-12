@@ -139,9 +139,6 @@
         });
         $('#datatable').DataTable();
     });
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
 
     alertify.defaults = {
         // dialogs defaults

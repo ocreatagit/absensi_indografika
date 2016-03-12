@@ -44,8 +44,7 @@
     setInterval(function () {
         $.get('<?php echo action('DaftarController@getTimeServer') ?>', function (data) {
             $('#timeServer').html(data);
-        });
-        //ambil data dari json        
+        });    
     }, 900);
 </script> 
 <?php $__env->stopSection(); ?>
