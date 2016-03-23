@@ -29,6 +29,7 @@ class Mk01 extends Migration {
             $table->text('pic');
             $table->bigInteger('tbsld');
             $table->bigInteger('htsld');
+            $table->date('tglgj');
             $table->integer('idjb')->unsigned();
             $table->timestamps();
         });

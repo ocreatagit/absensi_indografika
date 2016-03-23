@@ -15,6 +15,7 @@ class Th02 extends Migration {
             $table->increments('idph');
             $table->datetime('tglph');
             $table->bigInteger('nilph');
+            $table->char('status', 1);
             $table->integer("idhut")->unsigned();
             $table->timestamps();
         });

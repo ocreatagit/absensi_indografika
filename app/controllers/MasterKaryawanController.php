@@ -49,7 +49,7 @@ class MasterKaryawanController extends \BaseController {
      * @return Response
      */
     public function store() {
-//         1. setting validasi
+        // 1. setting validasi
         $messages = array(
             'required' => 'Inputan <b>Tidak Boleh Kosong</b>!',
             'numeric' => 'Inputan <b>Harus Angka</b>!',
@@ -284,9 +284,26 @@ class MasterKaryawanController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
+        $mg02 = new mg02();
+        $temp_mg02 = $mg02->getGajiKaryawan($id);
+        foreach($temp_mg02 as $temp) {
+            $relasi = mg02::find($temp->id);
+            $relasi->delete();
+        }
+        
+        $mj03 = new mj03();
+        $temp_mj03 = $mj03->getJamKerjaKaryawan($id);
+        foreach($temp_mj03 as $temp) {
+            $relasi = mj03::find($temp->id);
+            $relasi->delete();
+        }
+        
         $mk01 = new mk01();
         $karyawan = $mk01::find($id);
         $karyawan->delete();
+        
+        Session::flash('mk01_success', 'Data Telah Dihapus!');
+        
         return Redirect::to('master/karyawan');
 //        $content = Cart::content();
 //        foreach ($content as $row) {
@@ -452,5 +469,8 @@ class MasterKaryawanController extends \BaseController {
         Session::flash('mk01_success', 'Data Telah Diubah!');
         return Redirect::to('master/karyawan');
     }
-
+    
+    public function getKaryawan($idkar) {
+        
+    }
 }

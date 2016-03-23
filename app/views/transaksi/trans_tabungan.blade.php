@@ -15,45 +15,42 @@
     <div class="col-sm-12" style="">
         <div class="panel panel-default">
             <div class="panel-heading"></div>
+            @if(Session::has('tt01_success'))
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa fa-info-circle"></i> {{ $tt01_success }}
+            </div>    
+            @endif
             <div class="panel-body">
                 <div class="row">
-                    <form class="form-horizontal" action="#">
+                    <form class="form-horizontal"  action="{{ action("TransaksiTabunganController@store") }}" method="POST">
                         <div class="col-sm-8">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Nama Karyawan</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" name="idkar">
-                                        <option value="1">Karyawan 1</option>
-                                        <option value="2">Karyawan 2</option>
+                                    <select id="idkar" class="form-control" name="idkar" onchange="changeKaryawan('idkar')">
+                                        @foreach($karyawans as $karyawan)
+                                        <option value="{{ $karyawan->idkar }}">{{ $karyawan->nama }}</option>
+                                        @endforeach
                                     </select>
+                                    <input type="hidden" name="getKaryawanUrl" id="getKaryawanUrl" value=""/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Status</label>
+                                <label class="col-sm-4 control-label">Kode Absensi</label>
                                 <div class="col-sm-6">                                        
                                     <input type="text" class="form-control" id="disabledInput" name="abscd" value="0001" disabled=""/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Jenis Pinjaman</label>
-                                <div class="col-sm-6">
-                                    <select class="form-control" name="idhut">
-                                        <option value="Hutang">Hutang</option>
-                                        <option value="Kas Bon">Kas Bon</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Angsuran</label>
-                                <div class="col-sm-4">                                        
-                                    <input type="text" class="form-control" name="nilang" value=""/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Jumlah Pinjaman</label>
+                                <label class="col-sm-4 control-label">Jumlah Tabungan</label>
                                 <div class="col-sm-6">                                        
-                                    <input type="text" class="form-control" name="nilang" value=""/>
+                                    <input type="text" class="form-control" name="niltb" value=""/>
+                                    @if($errors->first('niltb'))
+                                    <div class="col-sm-12 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('niltb') }}</div>
+                                    @endif
                                 </div>
+
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label"></label>
@@ -74,37 +71,21 @@
                             <tr>
                                 <th class="text-center">Tanggal</th>
                                 <th class="text-center">Nama Karyawan</th>
-                                <th class="text-center">Total Pinjaman</th>
-                                <th class="text-center">Jenis Pinjaman</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">Total Tabungan</th>
                                 <th class="text-center">Opsi</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
+                            @foreach($tabungans as $tabungan)
                             <tr>
-                                <td>01-01-2016</td>
-                                <td>Karyawan 1</td>
-                                <td>Rp.<?php echo number_format(3000000, 0, ',', '.') ?>,-</td>
-                                <td>Hutang</td>
-                                <td>Belum Lunas</td>
-                                <td><a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+                                <td>{{ strftime("%d-%b-%Y", strtotime($tabungan->tgltb)); }}</td>
+                                <td>{{ $tabungan->nama }}</td>
+                                <td>Rp.<?php echo number_format($tabungan->niltb, 0, ',', '.') ?>,-</td>
+                                <td>
+                                    <a href="{{ action('TransaksiTabunganController@destroy', [$tabungan->idtb]) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
+                                </td>
                             </tr>
-                            <tr>
-                                <td>01-02-2016</td>
-                                <td>Karyawan 2</td>
-                                <td>Rp.<?php echo number_format(3000000, 0, ',', '.') ?>,-</td>
-                                <td>Kas Bon</td>
-                                <td>Belum Lunas</td>
-                                <td><a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>01-03-2016</td>
-                                <td>Karyawan 1</td>
-                                <td>Rp.<?php echo number_format(3400000, 0, ',', '.') ?>,-</td>
-                                <td>Kas Bon</td>
-                                <td>Belum Lunas</td>
-                                <td><a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -122,6 +103,64 @@
             align: 'left',
             donetext: 'Done'
         });
+
+        alertify.defaults = {
+            // dialogs defaults
+            modal: true,
+            basic: false,
+            frameless: false,
+            movable: true,
+            resizable: true,
+            closable: true,
+            closableByDimmer: true,
+            maximizable: true,
+            startMaximized: false,
+            pinnable: true,
+            pinned: true,
+            padding: true,
+            overflow: true,
+            maintainFocus: true,
+            transition: 'pulse',
+            autoReset: true,
+            // notifier defaults
+            notifier: {
+                // auto-dismiss wait time (in seconds)  
+                delay: 5,
+                // default position
+                position: 'bottom-right'
+            },
+            // language resources 
+            glossary: {
+                // dialogs default title
+                title: 'Konfirmasi',
+                // ok button text
+                ok: 'OK',
+                // cancel button text
+                cancel: 'Batal'
+            },
+            // theme settings
+            theme: {
+                // class name attached to prompt dialog input textbox.
+                input: 'ajs-input',
+                // class name attached to ok button
+                ok: 'ajs-ok',
+                // class name attached to cancel button 
+                cancel: 'ajs-cancel'
+            }
+        };
+
+        $(".delete").click(function (e) {
+            e.preventDefault();
+            var a = this.href;
+            alertify.confirm('Hapus Master Karyawan?', function (e) {
+                if (e) {
+                    window.location.assign(a);
+                } else {
+                    //after clicking Cancel
+                }
+            });
+        });
+
         $('#datatable').DataTable();
     });
 </script> 

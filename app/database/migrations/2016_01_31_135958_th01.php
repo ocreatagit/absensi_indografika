@@ -15,6 +15,7 @@ class Th01 extends Migration {
             $table->increments('idhut');
             $table->datetime('tglhut');
             $table->string('jenhut');
+            $table->tinyInteger('jmlang');
             $table->bigInteger('nilhut');
             $table->char("flglns", 1);
             $table->integer("idkar")->unsigned();

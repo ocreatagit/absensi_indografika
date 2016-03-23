@@ -5,6 +5,7 @@ class mk01 extends Eloquent {
     protected $table = 'mk01';
     protected $primaryKey = 'idkar';
 
+    // START Eloquent Relationship
     function mj01() {
         return $this->belongsTo('mj01', 'idjb');
     }
@@ -16,6 +17,16 @@ class mk01 extends Eloquent {
     function mg02() {
         return $this->hasMany("mg02");
     }
+    
+    function th01() {
+        return $this->hasMany("th01");
+    }
+    
+    function tt01() {
+        return $this->hasMany("tt01");
+    }
+    
+    // END Eloquent Relationship
 
     function getJamKerja($idkar) {
         return DB::table('mk01')
@@ -45,5 +56,4 @@ class mk01 extends Eloquent {
         $mk01 = $mk01[0];
         return $mk01->idkar;
     }
-
 }
