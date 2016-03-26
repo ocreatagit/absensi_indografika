@@ -19,24 +19,46 @@
         <div class="panel-body">
             <form class="form-horizontal" action="{{ action("TransaksiGajiController@store") }}" method="POST">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Nama Karyawan</label>
-                    <div class="col-sm-3 input-group ">
+                    <label class="col-sm-3 control-label">Nama Karyawan</label>
+                    <div class="col-sm-2 input-group ">
                         <input type="text" class="form-control disabled" value="{{ $karyawan->nama }}" disabled=""/>
                         <input type="hidden" name="idkar" value="{{ $karyawan->idkar }}"/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Tanggal Pembayaran Gaji</label>
+                    <div class="col-sm-3 input-group ">
+                        <input type="text" class="form-control" value="{{ date("d-m-Y") }}" name="tgltg" id="tgltg"/>
+                    </div>
+                </div>
                 @foreach($gajis as $gaji)
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ $gaji->jenis }}</label>
-                    <div class="col-sm-2 input-group ">
+                    <label class="col-sm-3 control-label">{{ $gaji->jenis }}</label>
+                    <div class="col-sm-2 input-group pull-left">
+                        <?php
+                        if ($gaji->jntgh == "Hari" || $gaji->jntgh == "Jam") {
+                            $jam = floor($gaji->jmtgh / 3600);
+                            $menit = $jam % 3600;
+                            $menit = floor(($menit / 60));
+                        } else {
+                            $jam = $gaji->jmtgh;
+                        }
+                        ?>
                         <input type="hidden" name="idgj[]" value="{{ $gaji->idgj }}" class="form-control"/>
-                        <input type="text" name="nominalgaji[]" value="{{ $gaji->jmltglgj == null ? 0 : $gaji->jmltglgj }}" class="form-control"/>
-                        <div class="input-group-addon">{{ $gaji->jntgh }}</div>
+                        <input type="text" name="nominalgaji[]" value="{{ $gaji->jmtgh == null ? 0 : $gaji->hari }}" class="form-control"/>
+                        <div class="input-group-addon">{{ $gaji->jntgh }}</div>                        
                     </div>
+                    <label class="col-sm-3" style="margin-top: 0.5%">
+                        <?php
+                        if ($gaji->jntgh == "Hari" || $gaji->jntgh == "Jam") {
+                            echo "Total Jam Kerja : " . $jam . " Jam " . $menit . " Menit";
+                        }
+                        ?>
+                    </label>
                 </div>
                 @endforeach
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"></label>
+                    <label class="col-sm-3 control-label"></label>
                     <div class="col-sm-3">
                         <button type="submit" name="btn_submit" value="submit" class="btn btn-primary">Buat Gaji Karyawan</button>
                     </div>
@@ -49,6 +71,13 @@
 
 @section('script')
 <script type="text/javascript">
+    $("#tgltg").datepicker({
+        inline: true,
+        dateFormat: "dd-mm-yy",
+        changeYear: true,
+        changeMonth: true,
+        maxDate: new Date()
+    });
 </script> 
 @stop
 

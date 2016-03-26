@@ -88,6 +88,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">Tanggal</th>
+                                <th class="text-center">Nomor Transaksi Hutang</th>
                                 <th class="text-center">Nama Karyawan</th>
                                 <th class="text-center">Total Pinjaman</th>
                                 <th class="text-center">Jenis Pinjaman</th>
@@ -99,6 +100,7 @@
                             @foreach($hutangs as $hutang)
                             <tr>
                                 <td> {{ strftime("%d-%b-%Y", strtotime($hutang->tglhut)) }}</td>
+                                <td> {{ $hutang->norhut }} </td>
                                 <td>{{ $hutang->nama }}</td>
                                 <td>Rp.<?php echo number_format($hutang->nilhut, 0, ',', '.') ?>,-</td>
                                 <td>{{ $hutang->jenhut }}</td>

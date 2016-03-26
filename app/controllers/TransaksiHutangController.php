@@ -56,6 +56,7 @@ class TransaksiHutangController extends \BaseController {
             $jmlang = Input::get("jmlang");
             $sumhut = 0;
 
+            $th01->norhut = Input::get("idhut") == "Hutang" ? "HT".$idhut.  date("m").  date("y") : "KB".$idhut.  date("m").  date("y");
             $th01->tglhut = date("Y-m-d");
             $th01->jenhut = Input::get("idhut");
             $th01->jmlang = Input::get("jmlang");

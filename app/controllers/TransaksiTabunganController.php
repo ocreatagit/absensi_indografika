@@ -47,15 +47,18 @@ class TransaksiTabunganController extends \BaseController {
         );
 
         // 2a. jika semua validasi terpenuhi simpan ke database
-        if ($validator->passes()) {            
+        if ($validator->passes()) {
             $niltb = Input::get("niltb");
             $idkar = Input::get("idkar");
             $tt01 = new tt01();
+            $idtb = $tt01->getAutoIncrement();
+
+            $tt01->nortb = "TB" . $idtb . date("m") . date("y");
             $tt01->tgltb = date("Y-m-d");
             $tt01->niltb = $niltb;
             $tt01->idkar = $idkar;
             $tt01->save();
-            
+
             $mk01 = mk01::find($idkar);
             $mk01->tbsld = $mk01->tbsld + $niltb;
             $mk01->save();
@@ -108,18 +111,18 @@ class TransaksiTabunganController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        $tt01 = tt01::find($id);        
+        $tt01 = tt01::find($id);
         $idkar = $tt01->idkar;
         $niltb = $tt01->niltb;
-        
+
         $tt01->delete();
-        
+
         $mk01 = mk01::find($idkar);
         $mk01->tbsld = $mk01->tbsld - $niltb;
         $mk01->save();
-        
+
         Session::flash('tt01_success', 'Data Telah DiHapus!');
-            return Redirect::to('inputdata/tabungan');
+        return Redirect::to('inputdata/tabungan');
     }
 
 }

@@ -68,25 +68,31 @@ Route::get('myindografika/tabungankaryawan', function() {
 Route::get('myindografika/pinjamankaryawan', function() {
     return View::make('master.my_pinjaman');
 });
-
 // end fitur
+
+// Input data
 // Transaksi Hutang
 Route::get('inputdata/hutang', "TransaksiHutangController@index");
 Route::post('inputdata/hutang/store', "TransaksiHutangController@store");
 Route::get('inputdata/hutang/delete/{id}', "TransaksiHutangController@destroy");
-
 
 // Transaksi Tabungan
 Route::get('inputdata/tabungan', "TransaksiTabunganController@index");
 Route::post('inputdata/tabungan/store', "TransaksiTabunganController@store");
 Route::get('inputdata/tabungan/delete/{id}', "TransaksiTabunganController@destroy");
 
+// Transaksi Gaji
 Route::get('inputdata/gaji',  "TransaksiGajiController@index");
 Route::get('inputdata/show_gaji_karyawan',  "TransaksiGajiController@show");
 Route::get('inputdata/trans_gaji_karyawan/{id}',  "TransaksiGajiController@create");
+Route::get('inputdata/gaji_karyawan_detail/{id}',  "TransaksiGajiController@detail");
 Route::post('inputdata/save_trans_gaji_karyawan',  "TransaksiGajiController@store");
 
-// Input data
+Route::get('inputdata/transfer',  "TransaksiTransferController@index");
+Route::get('inputdata/detail/{id}',  "TransaksiTransferController@show");
+Route::post('inputdata/simpan_gaji_bonus',  "TransaksiTransferController@savebonus");
+Route::get('inputdata/bayar_gaji/{id}',  "TransaksiTransferController@payment");
+
 // End Input data
 
 Route::get('daftarmasuk', function() {
@@ -107,7 +113,6 @@ Route::get('daftarlembur', function() {
     date_default_timezone_set('Asia/Jakarta');
     return View::make('daftar.lembur');
 });
-
 
 Route::get('absen', function() {
     return View::make('absen');

@@ -10,8 +10,10 @@ class TransaksiGajiController extends \BaseController {
     public function index() {
         $success = Session::get('tg01_success');
         $danger = Session::get('tg01_danger');
+        $tg01 = new tg01();
+        
         $data = array(
-            "karyawans" => mk01::all(),
+            "gajis" => $tg01->getGajiStatusN(),
             "tg01_success" => $success,
             "tg01_danger" => $danger
         );
@@ -26,13 +28,14 @@ class TransaksiGajiController extends \BaseController {
     public function create($id) {
         $mk01 = mk01::find($id);
         if ((int) date("m") == (int) strftime("%m", strtotime($mk01->tglgj))) {
-            Session::flash('tg01_danger', 'Slip Gaji Karyawan tersebut Telah Dibuat!');
+            Session::flash('tg01_danger', 'Slip Gaji Karyawan tersebut pada Bulan ini Telah Dibuat!');
             return Redirect::to('inputdata/show_gaji_karyawan');
         } else {
             $tg01 = new tg01();
+            $karyawan = mk01::find($id);
             $data = array(
-                "karyawan" => mk01::find($id),
-                "gajis" => $tg01->getDetailHariGaji($id, date("Y-m-d"))
+                "karyawan" => $karyawan,
+                "gajis" => $tg01->getJumlahHariGaji($id, $karyawan->tglgj)
             );
             return View::make('transaksi.trans_gaji_karyawan', $data);
         }
@@ -49,34 +52,41 @@ class TransaksiGajiController extends \BaseController {
                 $idgj = Input::get("idgj");
                 $nominalgj = Input::get("nominalgaji");
                 $idkar = Input::get("idkar");
+                $mk01 = mk01::find($idkar);
+                $tgltg = Input::get("tgltg");
 
                 $tg01 = new tg01();
                 $idtg = $tg01->getAutoIncrement();
 
-                $tg01->tgltg = date("Y-m-d");
+                $tg01->nortg = "GJ" . $idtg . date("m") . date("y");
+                $tg01->tgltg = strftime("%Y-%m-%d", strtotime($tgltg));
+                $tg01->tglgjsblm = $mk01->tglgj;
                 $tg01->status = "N";
                 $tg01->idkar = $idkar;
                 $tg01->save();
 
                 for ($i = 0; $i < count($idgj); $i++) {
+                    $nilgj = mg02::whereRaw('mk01_id = ? and mg01_id = ?', array($idkar, $idgj[$i]))->first()->nilgj;
                     $tg02 = new tg02();
                     $tg02->tg01_id = $idtg;
                     $tg02->mg01_id = $idgj[$i];
                     $tg02->jmtgh = $nominalgj[$i];
-                    $tg02->nmlgj = mg02::whereRaw('mk01_id = ? and mg01_id = ?', array($idkar, $idgj[$i]))->first()->nilgj;
+                    $tg02->nmlgj = $nilgj;
                     $tg02->save();
+
+                    $tg01->ttlgj += ($nominalgj[$i] * $nilgj);
+                    $tg01->save();
                 }
 
                 $mk01 = mk01::find($idkar);
                 $mk01->tglgj = date("Y-m-d");
                 $mk01->save();
             });
-
-            return Redirect::to('inputdata/gaji');
+            Session::flash('tg01_success', 'Slip Gaji Karyawan tersebut Telah Dibuat!');
         } else {
-            echo "There's no available payment!";
-            exit;
+            Session::flash('tg01_danger', 'There is no available payment >.<!');
         }
+        return Redirect::to('inputdata/show_gaji_karyawan');
     }
 
     /**
@@ -126,4 +136,22 @@ class TransaksiGajiController extends \BaseController {
         //
     }
 
+    public function detail($id) {
+        $success = Session::get('tg01_success');
+        $danger = Session::get('tg01_danger');
+        $tg01 = tg01::find($id);
+        $tg02 = new tg02();
+//        $tg02 = tg02::whereRaw();
+        $karyawan = mk01::find($tg01->idkar);
+        $data = array(
+            "karyawan" => $karyawan,
+            "gaji" => $tg01,
+            "gajis" => $tg02->getDetailGajiKaryawan($id),
+            "infogajis" => $tg01->getJamKerjaInSec($tg01->idkar, $tg01->tglgjsblm),
+            "tg01_success" => $success,
+            "tg01_danger" => $danger
+        );
+
+        return View::make('transaksi.trans_gaji_detail_karyawan', $data);
+    }
 }

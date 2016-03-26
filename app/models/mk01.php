@@ -26,6 +26,10 @@ class mk01 extends Eloquent {
         return $this->hasMany("tt01");
     }
     
+    function tg01() {
+        return $this->hasMany("tg01");
+    }
+    
     // END Eloquent Relationship
 
     function getJamKerja($idkar) {

@@ -70,6 +70,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">Tanggal</th>
+                                <th class="text-center">Nomor Transaksi Hutang</th>
                                 <th class="text-center">Nama Karyawan</th>
                                 <th class="text-center">Total Tabungan</th>
                                 <th class="text-center">Opsi</th>
@@ -79,6 +80,7 @@
                             @foreach($tabungans as $tabungan)
                             <tr>
                                 <td>{{ strftime("%d-%b-%Y", strtotime($tabungan->tgltb)); }}</td>
+                                <td> {{ $tabungan->nortb }} </td>
                                 <td>{{ $tabungan->nama }}</td>
                                 <td>Rp.<?php echo number_format($tabungan->niltb, 0, ',', '.') ?>,-</td>
                                 <td>

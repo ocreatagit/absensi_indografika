@@ -20,7 +20,7 @@
                 <i class="fa fa-info-circle"></i> {{ $tg01_success }}
             </div>    
             @endif
-            
+
             @if(Session::has('tg01_danger'))
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -39,7 +39,7 @@
                                 <th class="text-left">Foto</th>
                                 <th class="text-left">Nama</th>
                                 <th class="text-left">Username</th>                                
-                                <th class="text-left">Saldo</th>
+                                <th class="text-left">Omzet</th>
                                 <th class="text-left">Tgl Pembayaran <br> Gaji Terakhir </th>
                                 <th class="text-left">Opsi</th>
                             </tr>
@@ -53,14 +53,6 @@
                                 <td>{{ $karyawan->nama }}</td>
                                 <td>{{ $karyawan->usernm }}</td>
                                 <td width="">
-                                    <div class="row">
-                                        <div class="col-lg-6 text-right">Tabungan : </div>
-                                        <div class="col-lg-6 text-right">Rp.{{ number_format($karyawan->tbsld, 0, ",", ".") }},-</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6 text-right">Hutang : </div>
-                                        <div class="col-lg-6 text-right">Rp.{{ number_format($karyawan->htsld, 0, ",", ".") }},-</div>
-                                    </div>
                                 </td>
                                 <td>{{ strftime("%d-%b-%Y", strtotime($karyawan->tglgj)) }}</td>
                                 <td class="text-center" width="15%">
@@ -80,6 +72,7 @@
 
 @section('script')
 <script type="text/javascript">
+    
 </script> 
 @stop
 

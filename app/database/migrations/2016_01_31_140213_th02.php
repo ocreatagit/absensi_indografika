@@ -17,11 +17,10 @@ class Th02 extends Migration {
             $table->bigInteger('nilph');
             $table->char('status', 1);
             $table->integer("idhut")->unsigned();
-            $table->timestamps();
-        });
-
-        Schema::table('th02', function($table) {
             $table->foreign('idhut')->references('idhut')->on('th01');
+            $table->integer("idtg")->unsigned();
+            $table->foreign('idtg')->references('idtg')->on('tg01');
+            $table->timestamps();
         });
     }
 
