@@ -41,6 +41,8 @@ class MasterGajiController extends \BaseController {
             $gaji = new mg01();
             $gaji->jenis = Input::get('jenis');
             $gaji->status = Input::get('status') == "Y" ? "Y" : "N";
+            $gaji->jntgh = Input::get("jntgh");
+            $gaji->jmltgh = Input::get("jntgh") == "Bulan" ? 30 : 1;
             $gaji->save();
             Session::flash('mg01_success', 'Data Telah Ditambahkan!');
             return Redirect::to('master/jenisgaji');
@@ -112,6 +114,8 @@ class MasterGajiController extends \BaseController {
             $gaji = $mg01::find($id);
             $gaji->jenis = Input::get('jenis');
             $gaji->status = Input::get('status') == "Y" ? "Y" : "N";
+            $gaji->jntgh = Input::get("jntgh");
+            $gaji->jmltgh = Input::get("jntgh") == "Bulan" ? 30 : 1;
             $gaji->save();
             Session::flash('mg01_success', 'Data Telah Ditambahkan!');
             return Redirect::to('master/jenisgaji');

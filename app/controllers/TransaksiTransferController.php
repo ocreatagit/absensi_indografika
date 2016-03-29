@@ -50,6 +50,8 @@ class TransaksiTransferController extends \BaseController {
         $tg02 = new tg02();
         $th01 = new th01();
         $tt01 = new tt01();
+        $tz01 = new tz01();
+        $mk01 = new mk01();
 
         $karyawan = mk01::find($tg01->idkar);
         $data = array(
@@ -63,6 +65,9 @@ class TransaksiTransferController extends \BaseController {
             "infohutang" => $th01->getHutangBulan($tg01->idkar, $tg01->tgltg),
             "infokasbon" => $th01->getKasBonBulan($tg01->idkar, $tg01->tgltg),
             "infotabungan" => $tt01->getTabunganGaji($tg01->idkar, $tg01->tgltg),
+            "omzetIndividu" => $tz01->getOmzetIndividu($tg01->idkar, $tg01->tgltg),
+            "omzetTim" => $tz01->getOmzetTim($tg01->idkar, $tg01->tgltg),
+            "referrals" => $mk01->getReferralKar($tg01->idkar),
             "tg01_success" => $success,
             "tg01_danger" => $danger
         );

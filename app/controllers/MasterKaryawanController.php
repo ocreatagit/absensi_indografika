@@ -67,7 +67,9 @@ class MasterKaryawanController extends \BaseController {
                     "ttl" => "required",
                     "tglaktif" => "required",
                     "addr1" => "required",
-                    "notelp" => "required|numeric"
+                    "notelp" => "required|numeric",
+                    "kmindv" => "required|numeric",
+                    "kmtim" => "required|numeric"
                         ), $messages
         );
 
@@ -106,7 +108,10 @@ class MasterKaryawanController extends \BaseController {
             $karyawan->pic = $filename;
             $karyawan->tbsld = 0;
             $karyawan->htsld = 0;
+            $karyawan->tglgj = date("Y-m-d");
             $karyawan->idjb = Input::get('idjb');
+            $karyawan->kmindv = Input::get('kmindv');
+            $karyawan->kmtim = Input::get('kmtim');
             $karyawan->save();
 
             // Jam Kerja
@@ -153,14 +158,13 @@ class MasterKaryawanController extends \BaseController {
         $mk01 = new mk01();
         $mj01 = new mj01();
         $mj02 = new mj02();
-//        $mj02Kar = new mj02Kar();
         $mg01 = new mg01();
         $karyawan = $mk01::find($id);
-        $data = array();
+
 //         PENTING !~!~        
 //        $data = $karyawan->mj03->first()->mj02->first();
 //         DUMP QUERY
-        
+
         /*
           DB::listen(function($sql) {
           var_dump($sql);
@@ -170,6 +174,7 @@ class MasterKaryawanController extends \BaseController {
         try {
             $data = array(
                 "karyawan" => $mk01::find($id),
+                "karyawanalls" => $mk01->getReferral($id),
                 "idkaryawan" => $karyawan->idkar,
                 "action" => action("MasterKaryawanController@update", $id),
                 "jabatans" => $mj01->getJabatanAktif(),
@@ -178,13 +183,14 @@ class MasterKaryawanController extends \BaseController {
                 "gajis" => $mg01->getOtherGaji($karyawan->idkar),
                 "mk01_status" => $success,
                 "jamkerja1" => $mk01->getJamKerja($id),
-                "jamkerja2" => $mk01->getJamIstirahat($id)
+                "jamkerja2" => $mk01->getJamIstirahat($id),
+                "referrals" => $mk01->getReferralKar($id)
             );
 //            print_r($data); exit;
         } catch (Exception $ex) {
             DB::listen(function($sql) {
 //                if (isset($sql)) {
-                    dd($sql);
+                dd($sql);
 //                }
             });
             dd($ex->getMessage());
@@ -219,7 +225,9 @@ class MasterKaryawanController extends \BaseController {
                     "ttl" => "required",
                     "tglaktif" => "required",
                     "addr1" => "required",
-                    "notelp" => "required|numeric"
+                    "notelp" => "required|numeric",
+                    "kmindv" => "required|numeric",
+                    "kmtim" => "required|numeric"
                         ), $messages
         );
 
@@ -257,6 +265,8 @@ class MasterKaryawanController extends \BaseController {
             $karyawan->tbsld = 0;
             $karyawan->htsld = 0;
             $karyawan->idjb = Input::get('idjb');
+            $karyawan->kmindv = Input::get('kmindv');
+            $karyawan->kmtim = Input::get('kmtim');
             $karyawan->save();
 
             $datas = $karyawan->mj03;
@@ -286,24 +296,24 @@ class MasterKaryawanController extends \BaseController {
     public function destroy($id) {
         $mg02 = new mg02();
         $temp_mg02 = $mg02->getGajiKaryawan($id);
-        foreach($temp_mg02 as $temp) {
+        foreach ($temp_mg02 as $temp) {
             $relasi = mg02::find($temp->id);
             $relasi->delete();
         }
-        
+
         $mj03 = new mj03();
         $temp_mj03 = $mj03->getJamKerjaKaryawan($id);
-        foreach($temp_mj03 as $temp) {
+        foreach ($temp_mj03 as $temp) {
             $relasi = mj03::find($temp->id);
             $relasi->delete();
         }
-        
+
         $mk01 = new mk01();
         $karyawan = $mk01::find($id);
         $karyawan->delete();
-        
+
         Session::flash('mk01_success', 'Data Telah Dihapus!');
-        
+
         return Redirect::to('master/karyawan');
 //        $content = Cart::content();
 //        foreach ($content as $row) {
@@ -443,7 +453,7 @@ class MasterKaryawanController extends \BaseController {
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
         else {
-            return Redirect::to('master/karyawan/edit/'.$id."#datatable")
+            return Redirect::to('master/karyawan/edit/' . $id . "#datatable")
                             ->withErrors($validator)
                             ->withInput();
         }
@@ -469,8 +479,30 @@ class MasterKaryawanController extends \BaseController {
         Session::flash('mk01_success', 'Data Telah Diubah!');
         return Redirect::to('master/karyawan');
     }
-    
+
     public function getKaryawan($idkar) {
         
     }
+
+    public function saveReferral() {
+        $idreferral = Input::get("mk01_id_referral");
+        $idkar = Input::get("idkaryawan");
+        $mk02 = new mk02();
+        $mk02->mk01_id_parent = $idkar;
+        $mk02->mk01_id_child = $idreferral;
+        $mk02->flglead = Input::get("leader");
+        $mk02->save();
+        Session::flash('mk01_success', 'Referral Telah Ditambahkan!');
+        $url = URL::action("MasterKaryawanController@edit", ['id' => $idkar]) . "#datatable2";
+        return Redirect::to($url);
+    }
+
+    public function deleteReferral($id, $idkar) {
+        $mk02 = mk02::find($id);
+        $mk02->delete();
+        Session::flash('mk01_success', 'Referral Telah Ditambahkan!');
+        $url = URL::action("MasterKaryawanController@edit", ['id' => $idkar]) . "#datatable2";
+        return Redirect::to($url);
+    }
+
 }

@@ -51,6 +51,8 @@ Route::get('master/karyawan/save_gaji', 'MasterKaryawanController@saveGaji');
 Route::post('master/karyawan/save_karyawan_gaji', 'MasterKaryawanController@saveKaryawanGaji');
 Route::get('master/karyawan/delete_karyawan_gaji/{id}', 'MasterKaryawanController@deleteKaryawanGaji');
 Route::get('master/karyawan/get_karyawan/{id}', 'MasterKaryawanController@getKaryawan');
+Route::post('master/karyawan/save_referral_karyawan', 'MasterKaryawanController@saveReferral');
+Route::get('master/karyawan/delete_referral_karyawan/{id}/{idkar}', 'MasterKaryawanController@deleteReferral');
 
 Route::get('myindografika', function() {
     return View::make('master.my_indografika');
@@ -92,6 +94,11 @@ Route::get('inputdata/transfer',  "TransaksiTransferController@index");
 Route::get('inputdata/detail/{id}',  "TransaksiTransferController@show");
 Route::post('inputdata/simpan_gaji_bonus',  "TransaksiTransferController@savebonus");
 Route::get('inputdata/bayar_gaji/{id}',  "TransaksiTransferController@payment");
+
+Route::get('inputdata/omzet',  "TransaksiOmzetController@index");
+Route::get('inputdata/omzet_karyawan',  "TransaksiOmzetController@create");
+Route::post('inputdata/save_omzet_karyawan',  "TransaksiOmzetController@store");
+Route::get('inputdata/delete/{id}',  "TransaksiOmzetController@destroy");
 
 // End Input data
 

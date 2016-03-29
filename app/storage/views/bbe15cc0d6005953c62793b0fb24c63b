@@ -128,6 +128,30 @@
                         <div class="col-sm-6 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;"><?php echo $errors->first('addr1'); ?></div>
                         <?php endif; ?>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Komisi Individu</label>
+                        <div class="col-sm-3 input-group">                            
+                            <div class="input-group">
+                                <input type="number" name="kmindv" class="form-control text-right" value="<?php echo Input::old('kmindv', $karyawan["kmindv"]); ?>"/>
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <?php if($errors->first('kmindv')): ?>
+                        <div class="col-sm-6 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;"><?php echo $errors->first('kmindv'); ?></div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Komisi Tim</label>
+                        <div class="col-sm-3 input-group">                            
+                            <div class="input-group">
+                                <input type="number" name="kmtim" class="form-control text-right" value="<?php echo Input::old('kmtim', $karyawan["kmtim"]); ?>"/>
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <?php if($errors->first('kmtim')): ?>
+                        <div class="col-sm-6 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;"><?php echo $errors->first('kmtim'); ?></div>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <h2 class="page-header" style="margin-top: 0px;">Informasi Gaji</h2>
@@ -211,15 +235,6 @@
                         <?php endif; ?>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Nominal Gaji</label>
-                        <div class="col-sm-3 input-group ">
-                            <input type="text" class="form-control" value="" name="nilgj">                                    
-                        </div>
-                        <?php if($errors->first('nilgj')): ?>
-                        <div class="col-sm-3 col-sm-offset-2 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;"><?php echo $errors->first('nilgj'); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-4">
                             <div class="col-sm-8 input-group">
@@ -254,6 +269,82 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="panel panel-default" id="infGaji">
+            <div class="panel-heading">Informasi Referral</div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="<?php echo action("MasterKaryawanController@saveReferral"); ?>" method="POST">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nama Karyawan</label>
+                        <div class="col-sm-3 input-group ">
+                            <select class="form-control" name="mk01_id_referral">
+                                <?php if (count($karyawanalls) > 0) { ?>
+                                    <?php foreach($karyawanalls as $karyawanall): ?>
+                                    <option value="<?php echo $karyawanall->idkar; ?>"><?php echo $karyawanall->nama; ?></option>
+                                    <?php endforeach; ?>
+                                <?php } else { ?>
+                                    <option value="">Tidak Terdapat Karyawan</option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                            <input type="hidden" name="idkaryawan" value="<?php echo $idkaryawan; ?>"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Leader</label>
+                        <div class="col-sm-3 input-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="leader" id="inlineRadio1" value="Yes"> Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="leader" id="inlineRadio2" value="No" checked=""> No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-4">
+                            <div class="col-sm-8 input-group">
+                                <?php if (count($karyawanalls) > 0) { ?>
+                                    <button class="btn btn-success"> <i class=" glyphicon glyphicon-floppy-disk"></i> Simpan</button>
+                                <?php } else { ?>
+                                    <button class="btn btn-danger" disabled=""> <i class="glyphicon glyphicon-floppy-disk"></i> Simpan</button>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <div class="col-sm-6">
+                    <table class="table table-bordered table-hover" id="datatable2">
+                        <thead>
+                            <tr>
+                                <th class="text-left">No</th>
+                                <th class="text-left">Nama Referral</th>
+                                <th class="text-left">Leader</th>
+                                <th class="text-left">Opsi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <?php $no = 1; ?>
+                            <?php foreach($referrals as $referral): ?>
+                            <tr>
+                                <td><?php echo $no; ?></td>
+                                <td><?php echo $referral->child_name; ?></td>
+                                <td><?php echo $referral->flglead; ?></td>
+                                <td>
+                                    <a href="<?php echo action('MasterKaryawanController@deleteReferral', [$referral->id, $referral->mk01_id_parent]); ?>" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Referral?"><i class="fa fa-trash"></i></a>
+                                        <?php $no++; ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php } ?>
 <?php $__env->stopSection(); ?>
 
@@ -266,6 +357,8 @@
             donetext: 'Done'
         });
         $('#datatable').DataTable();
+
+        $('#datatable2').DataTable();
 
         $("#tglaktif").datepicker({
             inline: true,

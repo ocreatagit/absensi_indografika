@@ -30,6 +30,9 @@ class Mk01 extends Migration {
             $table->bigInteger('tbsld');
             $table->bigInteger('htsld');
             $table->date('tglgj');
+            $table->char("flgref", 3);
+            $table->float("kmindv");
+            $table->float("kmtim");
             $table->integer('idjb')->unsigned();
             $table->timestamps();
         });

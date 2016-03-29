@@ -18,6 +18,7 @@ class tg02 extends Eloquent {
                 INNER JOIN tg02 ON tg02.tg01_id = tg01.idtg
                 INNER JOIN mg01 ON mg01.idgj = tg02.mg01_id
                 WHERE tg01.idtg = $idtg;";
+//        echo $sql; exit;
         $tg02 = DB::select(DB::raw($sql));
         return $tg02;
     }

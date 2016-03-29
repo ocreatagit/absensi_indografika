@@ -93,6 +93,7 @@
                                 <li>{{ HTML::link('inputdata/tabungan', 'Tabungan')}}</li>
                                 <li>{{ HTML::link('inputdata/gaji', 'Slip Gaji')}}</li>
                                 <li>{{ HTML::link('inputdata/transfer', 'Transfer Gaji')}}</li>
+                                <li>{{ HTML::link('inputdata/omzet', 'Omzet Karyawan')}}</li>
                             </ul>
                         </li>
                         <li class="dropdown">
