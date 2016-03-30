@@ -51,24 +51,29 @@
                             @foreach($infogajis as $infogaji)
                             <?php
                             if ($infogaji->jntgh == "Hari" || $infogaji->jntgh == "Jam") {
-                            $jam = floor($infogaji->jmtgh / 3600);
-                            $menit = $jam % 3600;
-                            $menit = floor(($menit / 60));
+                                $jam = floor($infogaji->jmtgh / 3600);
+                                $menit = $jam % 3600;
+                                $menit = floor(($menit / 60));
                             } else {
-                            $jam = $gaji->jmtgh;
+                                $jam = $gaji->jmtgh;
                             }
                             if ($infogaji->jmtgh == null) {
-                            $totalTagih = 0;
+                                $totalTagih = 0;
                             } else {
-                            $totalTagih = $infogaji->hari * $infogaji->nilgj;
+                                $totalTagih = $infogaji->hari * $infogaji->nilgj;
                             }
                             $totalgaji += $totalTagih;
+
+                            $omtim = (($karyawan->kmtim * $omzetTim) / 100);
+                            if (count($referrals) < 1) {
+                                $omtim = 0;
+                            }
                             ?>
                             @endforeach
                             <div class="form-group blue">
                                 <label class="col-sm-5 control-label">Total Gaji : </label>
                                 <div class="col-sm-2 marginTop25">
-                                    <label> Rp.{{ number_format($totalgaji,0,',','.') }},- </label>
+                                    <label> Rp.{{ number_format($totalgaji + $gaji->ttlbns + (($karyawan->kmindv * $omzetIndividu) / 100) + $omtim,0,',','.') }},- </label>
                                 </div>
                             </div>
                             <?php
@@ -77,19 +82,20 @@
 
                             // akumulasi nilai totalpinjaman
                             if (count($infohutang) != 0) {
-                            $totalpinjaman += $infohutang[0]->nilph;
+                                $totalpinjaman += $infohutang[0]->nilph;
                             }
                             if (count($infokasbon) != 0) {
-                            $totalpinjaman += $infokasbon[0]->nilph;
+                                $totalpinjaman += $infokasbon[0]->nilph;
                             }
                             if (count($infotabungan) != 0) {
-                            $totalpinjaman += $infotabungan[0]->niltb;
+                                $totalpinjaman += $infotabungan[0]->niltb;
                             }
                             ?>
                             <div class="form-group green">
                                 <label class="col-sm-5 control-label">Total Gaji Bersih : </label>
                                 <div class="col-sm-2 marginTop25">
-                                    <label> Rp.{{ number_format(($totalgaji + $gaji->ttlbns + (($karyawan->kmindv * $omzetIndividu) / 100) + (($karyawan->kmtim * $omzetTim) / 100)) - $totalpinjaman,0,',','.') }},- </label>
+
+                                    <label> Rp.{{ number_format(($totalgaji + $gaji->ttlbns + (($karyawan->kmindv * $omzetIndividu) / 100) + $omtim) - $totalpinjaman,0,',','.') }},- </label>
                                 </div>
                             </div>
                         </form>
@@ -164,7 +170,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">Terlambat : </label>
                                         <div class="col-sm-7 marginTop08">           
-                                            <label>{{ 0 }} Menit </label>
+                                            <label>{{ $durasiLambat }} Menit </label>
                                         </div>
                                     </div>
                                     <div class="form-group blue">
@@ -177,13 +183,13 @@
                                         <label class="col-sm-4 control-label">Total Omzet Tim : </label>
                                         <div class="col-sm-7 marginTop08">
                                             <?php
-                                            if (count($referrals) > 0) {
-                                            ?>
-                                            <label>Rp.{{ number_format($omzetTim,0,',','.') }},-</label>
+                                            if (count($referrals) > 1) {
+                                                ?>
+                                                <label>Rp.{{ number_format($omzetTim,0,',','.') }},-</label>
                                             <?php } else {
-                                            ?>
-                                            <label>Rp.{{ number_format(0,0,',','.') }},-</label>
-                                            <?php
+                                                ?>
+                                                <label>Rp.{{ number_format(0,0,',','.') }},-</label>
+                                                <?php
                                             }
                                             ?>
                                         </div>
@@ -205,16 +211,16 @@
                                         <div class="col-sm-7 marginTop08">
                                             <?php
                                             if ($infogaji->jntgh == "Hari" || $infogaji->jntgh == "Jam") {
-                                            $jam = floor($infogaji->jmtgh / 3600);
-                                            $menit = $jam % 3600;
-                                            $menit = floor(($menit / 60));
+                                                $jam = floor($infogaji->jmtgh / 3600);
+                                                $menit = $jam % 3600;
+                                                $menit = floor(($menit / 60));
                                             } else {
-                                            $jam = $gaji->jmtgh;
+                                                $jam = $gaji->jmtgh;
                                             }
                                             if ($infogaji->jmtgh == null) {
-                                            $totalTagih = 0;
+                                                $totalTagih = 0;
                                             } else {
-                                            $totalTagih = $infogaji->hari * $infogaji->nilgj;
+                                                $totalTagih = $infogaji->hari * $infogaji->nilgj;
                                             }
 
                                             // Akumulasi nilai gaji kotor
@@ -237,7 +243,7 @@
                                         <label class="col-sm-4 control-label">Komisi Tim : </label>
                                         <div class="col-sm-7 marginTop08">
                                             <?php
-                                            if (count($referrals) > 0) {
+                                            if (count($referrals) > 1) {
                                                 $bool = FALSE;
                                                 foreach ($referrals as $key => $val) {
                                                     if ($val->mk01_id_child == $karyawan->idkar && $val->flglead == "Yes") {
@@ -250,11 +256,12 @@
                                                 }
                                                 ?>
                                                 <label>Rp.{{ number_format((($karyawan->kmtim * $omzetTim) / 100),0,',','.') }},-</label>
-                                            <?php } else {
+                                                <?php
+                                                $gajikotor += (($karyawan->kmtim * $omzetTim) / 100);
+                                            } else {
                                                 ?>
                                                 <label>Rp.{{ number_format(0,0,',','.') }},-</label>
                                                 <?php
-                                                $gajikotor += (($karyawan->kmtim * $omzetTim) / 100);
                                             }
                                             ?>
                                         </div>

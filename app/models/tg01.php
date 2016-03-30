@@ -232,5 +232,21 @@ class tg01 extends Eloquent {
         }
         return $count;
     }
+    
+    function getKeterlambatan($date,$idkar){
+        $sql = "SELECT sum( CASE WHEN (CAST(TIME_TO_SEC(TIMEDIFF(DATE_FORMAT(ta02.tglmsk, '%H:%i'), DATE_FORMAT(mj02.jmmsk, '%H:%i')))/60 as integer)) < 0 THEN 0 ELSE (CAST(TIME_TO_SEC(TIMEDIFF(DATE_FORMAT(ta02.tglmsk, '%H:%i'), DATE_FORMAT(mj02.jmmsk, '%H:%i')))/60 as integer)) END ) as lbt  FROM mk01
+                RIGHT JOIN mj03 ON mj03.mk01_id = mk01.idkar
+                RIGHT JOIN mj02 ON mj02.idjk = mj03.mj02_id
+                RIGHT JOIN ta02 ON ta02.mk01_id = mk01.idkar
+                WHERE MONTH(ta02.tglmsk) = " . date("n", strtotime($date)) . " AND YEAR(ta02.tglmsk) = " . date("Y", strtotime($date)) . " AND ta02.abscd = 0 AND mj02.tipe = 1 AND mk01.idkar = $idkar";
+//        dd($sql);
+        $count = DB::select(DB::raw($sql));
+        if (count($count) != 0) {
+            $count = $count[0]->lbt;
+        } else {
+            $count = 0;
+        }
+        return $count;
+    }
 
 }
