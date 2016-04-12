@@ -8,6 +8,8 @@ class MasterKaryawanController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0, 1], 4);
+
         $success = Session::get('mk01_success');
         $data = array(
             "karyawans" => mk01::all(),
@@ -160,6 +162,8 @@ class MasterKaryawanController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
+        User::loginCheck([0, 1], 4);
+
         $success = Session::get('mk01_success');
         $mk01 = new mk01();
         $mj01 = new mj01();
@@ -509,6 +513,32 @@ class MasterKaryawanController extends \BaseController {
         Session::flash('mk01_success', 'Referral Telah Ditambahkan!');
         $url = URL::action("MasterKaryawanController@edit", ['id' => $idkar]) . "#datatable2";
         return Redirect::to($url);
+    }
+
+    public function usermatrix($id) {
+        User::loginCheck([0, 1], 4);
+        $sql = "select * from mm01";
+        $data['usermatrixs'] = DB::select(DB::raw($sql));
+        $sql = "SELECT * FROM `mm02` WHERE `mk01_id` = " . $id . " ORDER BY mm01_id ASC";
+        $data['matrixs'] = DB::select(DB::raw($sql));
+        $data['counter'] = 0;
+        $data['maks'] = count($data['matrixs']);
+        $data['id'] = $id;
+//        print_r($data['matrixs'][$data['counter']]->mm01_id);exit;
+        return View::make('master.m_user_matrix', $data);
+    }
+
+    public function usermatrixsave($id) {
+        $datas = Input::all();
+        DB::table('mm02')->where('mk01_id', '=', $id)->delete();
+        
+        $insert = array();
+        foreach($datas as $data ){
+            array_push($insert, array('mk01_id' => $id, 'mm01_id' => $data));
+        }
+        DB::table('mm02')->insert($insert);
+        
+        return Redirect::to('master/karyawan');
     }
 
 }

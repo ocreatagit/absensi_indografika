@@ -8,6 +8,8 @@ class TransaksiGajiController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1]);
+        
         $success = Session::get('tg01_success');
         $danger = Session::get('tg01_danger');
         $tg01 = new tg01();
@@ -126,6 +128,8 @@ class TransaksiGajiController extends \BaseController {
      * @return Response
      */
     public function show() {
+        User::loginCheck([0,1]);
+        
         $success = Session::get('tg01_success');
         $danger = Session::get('tg01_danger');
         $data = array(

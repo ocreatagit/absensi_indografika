@@ -12,8 +12,13 @@
  */
 
 Route::get('/', function() {
-    return View::make('hello');
+    return Redirect::to('login');
 });
+
+//login
+Route::get('login','loginController@index');
+Route::post('login','loginController@login');
+Route::get('logout','loginController@logout');
 
 // Master Jam Kerja
 Route::get('master/jamkerja', 'MasterJamKerjaController@index');
@@ -134,3 +139,5 @@ Route::get('absen', function() {
 });
 
 Route::get('getAbsen', 'HomeController@getAbsen');
+Route::get('usermatrix/{id}', 'MasterKaryawanController@usermatrix' );
+Route::post('usermatrix/{id}', 'MasterKaryawanController@usermatrixsave' );

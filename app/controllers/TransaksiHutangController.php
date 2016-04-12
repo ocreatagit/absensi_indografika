@@ -8,6 +8,8 @@ class TransaksiHutangController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1]);
+        
         $success = Session::get('th01_success');
         $danger = Session::get('th01_danger');
         $th01 = new th01();

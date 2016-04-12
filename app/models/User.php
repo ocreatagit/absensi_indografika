@@ -1,26 +1,23 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
+class User {
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
-
-	use UserTrait, RemindableTrait;
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password', 'remember_token');
+    public static function loginCheck($tipe, $idmenu = FALSE) {
+        if (Session::has('user') && $idmenu) {
+            $user = Session::get('user');
+            if (in_array($user['tipe'], $tipe)) {
+                $sql = "SELECT * FROM `mm02` WHERE mm01_id = $idmenu AND mk01_id = " . $user["idkar"];
+                $usermatrik = DB::select(DB::raw($sql));
+                if (count($usermatrik) > 0) {
+                    return TRUE;
+                } else {
+                    //redirect ke peringatan akses halaman
+                    print_r("anda tidak berhak mengakses halaman $idmenu, kalo mau membukanya bayar dulu");
+                    exit;
+                }
+            }
+        }
+        return Redirect::to('login');
+    }
 
 }

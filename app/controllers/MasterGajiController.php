@@ -8,6 +8,8 @@ class MasterGajiController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1]);
+        
         $mg01 = new mg01();
         $gaji = mg01::all();
         $success = Session::get('mg01_success');
@@ -81,6 +83,8 @@ class MasterGajiController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
+        User::loginCheck([0,1]);
+        
         $mg01 = new mg01();
         $gaji = mg01::all();
         $data = array(

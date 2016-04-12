@@ -8,6 +8,8 @@ class TransaksiOmzetController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1]);
+        
         $success = Session::get('tz01_success');
         $danger = Session::get('tz01_danger');
         $tz01 = new tz01();

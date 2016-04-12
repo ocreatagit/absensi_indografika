@@ -8,6 +8,8 @@ class TransaksiTabunganController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1]);
+        
         $success = Session::get('tt01_success');
         $danger = Session::get('tt01_danger');
         $tt01 = new tt01();
