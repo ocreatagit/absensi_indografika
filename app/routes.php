@@ -77,11 +77,15 @@ Route::get('myindografika/pinjamankaryawan', function() {
 Route::get('inputdata/hutang', "TransaksiHutangController@index");
 Route::post('inputdata/hutang/store', "TransaksiHutangController@store");
 Route::get('inputdata/hutang/delete/{id}', "TransaksiHutangController@destroy");
+Route::get('inputdata/hutang/edit/{id}', "TransaksiHutangController@edit");
+Route::post('inputdata/hutang/update/{id}', "TransaksiHutangController@update");
 
 // Transaksi Tabungan
 Route::get('inputdata/tabungan', "TransaksiTabunganController@index");
 Route::post('inputdata/tabungan/store', "TransaksiTabunganController@store");
 Route::get('inputdata/tabungan/delete/{id}', "TransaksiTabunganController@destroy");
+Route::get('inputdata/tabungan/edit/{id}', "TransaksiTabunganController@edit");
+Route::post('inputdata/tabungan/update/{id}', "TransaksiTabunganController@update");
 
 // Transaksi Gaji
 Route::get('inputdata/gaji',  "TransaksiGajiController@index");
@@ -89,12 +93,16 @@ Route::get('inputdata/show_gaji_karyawan',  "TransaksiGajiController@show");
 Route::get('inputdata/trans_gaji_karyawan/{id}',  "TransaksiGajiController@create");
 Route::get('inputdata/gaji_karyawan_detail/{id}',  "TransaksiGajiController@detail");
 Route::post('inputdata/save_trans_gaji_karyawan',  "TransaksiGajiController@store");
+Route::get('inputdata/delete_trans_gaji_karyawan/{id}',  "TransaksiGajiController@destroy");
 
+// Transaksi Transfer Gaji
 Route::get('inputdata/transfer',  "TransaksiTransferController@index");
 Route::get('inputdata/detail/{id}',  "TransaksiTransferController@show");
 Route::post('inputdata/simpan_gaji_bonus',  "TransaksiTransferController@savebonus");
 Route::get('inputdata/bayar_gaji/{id}',  "TransaksiTransferController@payment");
+Route::get('inputdata/print_gaji/{id}',  "TransaksiTransferController@printgaji");
 
+// Transaksi Omzet
 Route::get('inputdata/omzet',  "TransaksiOmzetController@index");
 Route::get('inputdata/omzet_karyawan',  "TransaksiOmzetController@create");
 Route::post('inputdata/save_omzet_karyawan',  "TransaksiOmzetController@store");

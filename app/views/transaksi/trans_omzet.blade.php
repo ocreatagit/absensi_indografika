@@ -22,6 +22,12 @@
             <i class="fa fa-info-circle"></i> {{ $tz01_success }}
         </div>    
         @endif
+        @if(Session::has('tz01_danger'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <i class="fa fa-warning"></i> {{ $tz01_danger }}
+        </div>    
+        @endif
         <div class="panel-body">
             <div class="col-sm-12">
                 <table class="table table-bordered table-hover" id="datatable">

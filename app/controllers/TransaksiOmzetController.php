@@ -9,10 +9,12 @@ class TransaksiOmzetController extends \BaseController {
      */
     public function index() {
         $success = Session::get('tz01_success');
+        $danger = Session::get('tz01_danger');
         $tz01 = new tz01();
         $data = array(
             "omzets" => $tz01->getOmzet(),
-            "tz01_success" => $success
+            "tz01_success" => $success,
+            "tz01_danger" => $danger
         );
         return View::make('transaksi.trans_omzet', $data);
     }
@@ -37,14 +39,44 @@ class TransaksiOmzetController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $tz01 = new tz01();
-        $tz01->tglomz = strftime("%Y-%m-%d", strtotime(Input::get("tglomz")));
-        $tz01->nilomz = Input::get("nilomz");
-        $tz01->idkar = Input::get("idkar");
-        $tz01->save();
-        
-        Session::flash('tz01_success', 'Data Telah DiTambahkan!');
-        return Redirect::to('inputdata/omzet');
+
+        // 1. setting validasi
+        $messages = array(
+            'required' => 'Inputan <b>Tidak Boleh Kosong</b>!',
+            'numeric' => 'Inputan <b>Harus Angka</b>!',
+            'same' => 'Password <b>Tidak Sama</b>!'
+        );
+
+        $validator = Validator::make(
+                        Input::all(), array(
+                    "nilomz" => "required|numeric",
+                    "tglomz" => "required"
+                        ), $messages
+        );
+
+        // 2a. jika semua validasi terpenuhi simpan ke database
+        if ($validator->passes()) {
+            $cek = new tz01();
+            $cek = $cek->getLatestOmzet(Input::get("idkar"), date("Y-m-d"));
+            if (count($cek) == 0) {
+                $tz01 = new tz01();
+                $tz01->tglomz = strftime("%Y-%m-%d", strtotime(Input::get("tglomz")));
+                $tz01->nilomz = Input::get("nilomz");
+                $tz01->idkar = Input::get("idkar");
+                $tz01->save();
+
+                Session::flash('tz01_success', 'Data Telah DiTambahkan!');
+            } else {
+                Session::flash('tz01_danger', 'Omzet Telah Di Setorkan!');
+            }
+            return Redirect::to('inputdata/omzet');
+        }
+        // 2b. jika tidak, kembali ke halaman form registrasi
+        else {
+            return Redirect::to('inputdata/omzet_karyawan')
+                            ->withErrors($validator)
+                            ->withInput();
+        }
     }
 
     /**
@@ -86,7 +118,7 @@ class TransaksiOmzetController extends \BaseController {
     public function destroy($id) {
         $tz01 = tz01::find($id);
         $tz01->delete();
-        
+
         Session::flash('tz01_success', 'Data Telah DiHapus!');
         return Redirect::to('inputdata/omzet');
     }

@@ -106,14 +106,85 @@ class TransaksiTransferController extends \BaseController {
     }
 
     public function payment($id) {
+        $tg01 = tg01::find($id);
+        $check = new tg01();
+
+        // update hutang
+        $idph = $check->checkExistHutangKaryawan($tg01->tgltg, $tg01->idkar);
+        if ($idph != -1) {
+            $th02 = th02::find($idph);
+            $th02->idtg = $id;
+            $th02->status = 'Y';
+            $th02->save();
+            
+            $mk01 = mk01::find($tg01->idkar);
+            $mk01->htsld = $mk01->htsld + $th02->nilhut;
+            $mk01->save();
+//            echo "- ada hutang <br>";
+        }
         
+        // update tabungan
+        $idtb = $check->checkExistTabunganKaryawan($tg01->tgltg, $tg01->idkar);
+        if ($idtb != -1) {
+            $tt01 = tt01::find($idtb);
+            $tt01->idtg = $id;
+            $tt01->save();
+            
+            $mk01 = mk01::find($tt01->idkar);
+            $mk01->tbsld = $mk01->tbsld + $tt01->niltb;
+            $mk01->save();
+//            echo "- ada tabungan <br>";
+        }
+
+        // Update hutang, kasbon dan tabungan sesuai pembayaran gaji
+        $check->updateHutangTabunganLunas($idph, $idtb);
+
+        // update status gaji
+        $check->updateStatusGaji($id, "Y");
+
+        Session::flash('tg01_success', 'Gaji Telah Di Transfer!');
+        // Redirect ke url + menuju div tertentu
+        $url = URL::action("TransaksiTransferController@index");
+        return Redirect::to($url);
+    }
+
+    public function printgaji($id) {
+        $success = Session::get('tg01_success');
+        $danger = Session::get('tg01_danger');
+        $tg01 = tg01::find($id);
+        $tg02 = new tg02();
+        $th01 = new th01();
+        $tt01 = new tt01();
+        $tz01 = new tz01();
+        $mk01 = new mk01();
+
+        $karyawan = mk01::find($tg01->idkar);
+        $data = array(
+            "karyawan" => $karyawan,
+            "kehadiran" => $tg01->getKehadiranGaji($tg01->tglgjsblm, $tg01->idkar),
+            "durasiBekerja" => $tg01->getDurasiBekerjaGaji($tg01->tglgjsblm, $tg01->idkar),
+            "durasiLembur" => $tg01->getDurasiLemburGaji($tg01->tglgjsblm, $tg01->idkar),
+            "durasiLambat" => $tg01->getKeterlambatan($tg01->tglgjsblm, $tg01->idkar),
+            "gaji" => $tg01,
+            "gajis" => $tg02->getDetailGajiKaryawan($id),
+            "infogajis" => $tg01->getJamKerjaInSec($tg01->idkar, $tg01->tglgjsblm),
+            "infohutang" => $th01->getHutangBulan($tg01->idkar, $tg01->tgltg),
+            "infokasbon" => $th01->getKasBonBulan($tg01->idkar, $tg01->tgltg),
+            "infotabungan" => $tt01->getTabunganGaji($tg01->idkar, $tg01->tgltg),
+            "omzetIndividu" => $tz01->getOmzetIndividu($tg01->idkar, $tg01->tgltg),
+            "omzetTim" => $tz01->getOmzetTim($tg01->idkar, $tg01->tgltg),
+            "referrals" => $mk01->getReferralKar($tg01->idkar),
+            "tg01_success" => $success,
+            "tg01_danger" => $danger
+        );
+        return View::make('transaksi.trans_print_gaji', $data);
     }
 
     public function savebonus() {
         //Input POST
         $idtg = Input::get("idtg");
         $ttlbns = Input::get("ttlbns");
-        
+
         // 1. setting validasi
         $messages = array(
             'required' => 'Inputan <b>Tidak Boleh Kosong</b>!',
@@ -128,11 +199,11 @@ class TransaksiTransferController extends \BaseController {
         );
 
         // 2a. jika semua validasi terpenuhi simpan ke database
-        if ($validator->passes()) {            
+        if ($validator->passes()) {
             $tg01 = tg01::find($idtg);
             $tg01->ttlbns = $ttlbns;
             $tg01->save();
-            
+
             Session::flash('tg01_success', 'Gaji Bonus Telah Ditambahkan!');
             // Redirect ke url + menuju div tertentu
             $url = URL::action("TransaksiTransferController@show", ['id' => $idtg]);

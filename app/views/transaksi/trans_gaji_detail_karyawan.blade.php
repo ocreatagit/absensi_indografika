@@ -76,7 +76,8 @@
         dateFormat: "dd-mm-yy",
         changeYear: true,
         changeMonth: true,
-        maxDate: new Date()
+        minDate: '2013-09-10',
+        maxDate: '2016-12-12'
     });
 </script> 
 @stop

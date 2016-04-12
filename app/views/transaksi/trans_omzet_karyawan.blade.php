@@ -21,7 +21,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <i class="fa fa-info-circle"></i> {{ $tz01_success }}
         </div>    
-        @endif
+        @endif        
         <div class="panel-body">
             <div class="col-sm-12">
                 <form class="form-horizontal" action="{{ action("TransaksiOmzetController@store") }}" method="POST">
@@ -38,13 +38,19 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tanggal Transaksi :</label>
                         <div class="col-sm-3 input-group ">
-                            <input type="text" name="tglomz" id="jmlomz" value="" class="form-control"/>
+                            <input type="text" name="tglomz" id="jmlomz" value="{{ Input::old("tglomz", date('d-m-Y')) }}" class="form-control"/>
+                            @if($errors->first('tglomz'))
+                            <div class="col-sm-12 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('tglomz') }}</div>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Jumlah Omzet : </label>
                         <div class="col-sm-4 input-group ">
                             <input type="text" name="nilomz" value="" class="form-control"/>
+                            @if($errors->first('nilomz'))
+                            <div class="col-sm-12 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('nilomz') }}</div>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group">

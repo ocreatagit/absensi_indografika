@@ -126,6 +126,12 @@ class MasterKaryawanController extends \BaseController {
             $jam_kerja->mk01_id = $idkaryawan;
             $jam_kerja->save();
 
+            $mk02 = new mk02();
+            $mk02->mk01_id_parent = $idkaryawan;
+            $mk02->mk01_id_child = $idkaryawan;
+            $mk02->flglead = "No";
+            $mk02->save();
+
             Session::flash('mk01_success', 'Data Telah Ditambahkan!');
             return Redirect::to('master/karyawan/add_gaji/' . $karyawan->idkar);
         }

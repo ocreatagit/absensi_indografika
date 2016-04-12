@@ -55,7 +55,7 @@ class tg01 extends Eloquent {
         $sql = "SELECT mg01.*, mg02.mk01_id, mg02.mg01_id, mg02.nilgj, 
                 CASE WHEN mg01.jntgh = 'Bulan' 
                 THEN 
-                        period_diff(date_format(now(), '%Y%m'), date_format(karyawan.tglgj, '%Y%m'))
+                        period_diff(date_format(DATE_ADD(karyawan.tglgj, INTERVAL 1 MONTH), '%Y%m'), date_format(karyawan.tglgj, '%Y%m'))
                 ELSE 
                         CASE WHEN mg01.jntgh = 'Hari' 
                         THEN 
@@ -92,7 +92,7 @@ class tg01 extends Eloquent {
                     (SELECT COUNT(*) FROM ta02 WHERE ta02.abscd = 0 AND ta02.mk01_id = karyawan.idkar AND MONTH(ta02.tglmsk) = MONTH('$date'))
                         ELSE
                             CASE WHEN mg01.jntgh = 'Bulan' THEN
-                                period_diff(date_format(now(), '%Y%m'), date_format(karyawan.tglgj, '%Y%m'))
+                                period_diff(date_format(DATE_ADD(karyawan.tglgj, INTERVAL 1 MONTH), '%Y%m'), date_format(karyawan.tglgj, '%Y%m'))
                             ELSE
                                 0 
                             END
@@ -110,7 +110,7 @@ class tg01 extends Eloquent {
         $sql = "SELECT mg01.*, mg02.mk01_id, mg02.mg01_id, mg02.nilgj, 
                 CASE WHEN mg01.jntgh = 'Bulan' 
                 THEN 
-                        period_diff(date_format(karyawan.tglgj, '%Y%m'), date_format('$date', '%Y%m'))
+                        period_diff(date_format(DATE_ADD('$date', INTERVAL 1 MONTH), '%Y%m'), date_format('$date', '%Y%m'))
                 ELSE 
                         CASE WHEN mg01.jntgh = 'Hari' 
                         THEN 
@@ -147,7 +147,7 @@ class tg01 extends Eloquent {
                     (SELECT COUNT(*) FROM ta02 WHERE ta02.abscd = 0 AND ta02.mk01_id = karyawan.idkar AND MONTH(ta02.tglmsk) = MONTH('$date'))
                         ELSE
                             CASE WHEN mg01.jntgh = 'Bulan' THEN
-                                period_diff(date_format(karyawan.tglgj, '%Y%m'), date_format('$date', '%Y%m'))
+                                period_diff(date_format(DATE_ADD('$date', INTERVAL 1 MONTH), '%Y%m'), date_format('$date', '%Y%m'))
                             ELSE
                                 0 
                             END
@@ -232,8 +232,8 @@ class tg01 extends Eloquent {
         }
         return $count;
     }
-    
-    function getKeterlambatan($date,$idkar){
+
+    function getKeterlambatan($date, $idkar) {
         $sql = "SELECT sum( CASE WHEN (CAST(TIME_TO_SEC(TIMEDIFF(DATE_FORMAT(ta02.tglmsk, '%H:%i'), DATE_FORMAT(mj02.jmmsk, '%H:%i')))/60 as integer)) < 0 THEN 0 ELSE (CAST(TIME_TO_SEC(TIMEDIFF(DATE_FORMAT(ta02.tglmsk, '%H:%i'), DATE_FORMAT(mj02.jmmsk, '%H:%i')))/60 as integer)) END ) as lbt  FROM mk01
                 RIGHT JOIN mj03 ON mj03.mk01_id = mk01.idkar
                 RIGHT JOIN mj02 ON mj02.idjk = mj03.mj02_id
@@ -247,6 +247,61 @@ class tg01 extends Eloquent {
             $count = 0;
         }
         return $count;
+    }
+
+    function checkExistHutangKaryawan($date, $idkar) {
+        $th02 = DB::table('th02')
+                ->join('th01', 'th01.idhut', '=', 'th02.idhut')
+                ->select('th02.idph', 'th02.tglph')
+                ->where('th01.idkar', '=', $idkar)
+                ->where('th02.idtg', '=', 0)
+                ->whereMonth('th02.tglph', '=', date("n", strtotime($date)))
+                ->whereYear('th02.tglph', '=', date("Y", strtotime($date)))
+                ->get();
+        if (count($th02) > 0) {
+            return $th02[0]->idph;
+        } else {
+            return -1;
+        }
+    }
+
+    function checkExistTabunganKaryawan($date, $idkar) {
+        $tt01 = DB::table('tt01')
+                ->select('tt01.idtb', 'tt01.tgltb')
+                ->where('tt01.idkar', '=', $idkar)
+                ->where('tt01.idtg', '=', 0)
+                ->whereMonth('tt01.tgltb', '=', date("n", strtotime($date)))
+                ->whereYear('tt01.tgltb', '=', date("Y", strtotime($date)))
+                ->get();
+        if (count($tt01) > 0) {
+            return $tt01[0]->idtb;
+        } else {
+            return -1;
+        }
+    }
+
+    function updateHutangTabunganLunas($idph, $idtb) {
+        if ($idph != -1) {
+            $idhut = th02::find($idph)->idhut;
+            $sql = "SELECT COUNT(idtg) as c_idtg
+                    FROM th02 
+                    WHERE idhut = $idhut AND idtg = 0;";
+
+            $count = DB::select(DB::raw($sql));
+            $flaglunas = $count[0]->c_idtg;
+
+            if ($flaglunas == 0) {
+                $th01 = th01::find($idhut);
+                $th01->flglns = "Y";
+                $th01->save();
+            }
+        }
+    }
+
+    function updateStatusGaji($idtg, $status) {
+        $tg01 = tg01::find($idtg);
+        $tg01->status = "Y";
+        $tg01->save();
     }
 
 }

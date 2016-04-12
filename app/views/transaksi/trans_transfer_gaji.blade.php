@@ -63,8 +63,9 @@
                                 }
                                 ?>
                                 <td class="text-center" width="15%">
-                                    <a href="{{ action('TransaksiTransferController@show', [$gaji->idtg]) }}" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Detail?"><i class="fa fa-info-circle"></i></a>
-                                    <a href="{{ action('TransaksiTransferController@payment', [$gaji->idtg]) }}" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Bayar Gaji?"><i class="fa fa-money"></i></a>
+                                    <a href="{{ action('TransaksiTransferController@show', [$gaji->idtg]) }}" class="btn btn-info" data-toggle="tooltip" data-placement="left" title="Detail?"><i class="fa fa-info-circle"></i></a>                                    
+                                    <a href="{{ action('TransaksiTransferController@payment', [$gaji->idtg]) }}" class="btn btn-success {{ $gaji->status == "N" ? "" : "disabled" }}" data-toggle="tooltip" data-placement="left" title="Bayar Gaji?">{{ $gaji->status == "N" ? '<i class="fa fa-money"></i>' : '<i class="fa fa-check"></i>' }}</a>                                    
+                                    <a target="_blank" href="{{ action('TransaksiTransferController@printgaji', [$gaji->idtg]) }}" class="btn btn-default {{ $gaji->status == "Y" ? "" : "disabled" }}" data-toggle="tooltip" data-placement="left" title="Cetak Slip Gaji?"><i class="fa fa-print"></i></a>
                                         <?php $no++; ?>
                                 </td>
                             </tr>

@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Tanggal Pembayaran Gaji</label>
                     <div class="col-sm-3 input-group ">
-                        <input type="text" class="form-control" value="{{ date("d-m-Y") }}" name="tgltg" id="tgltg"/>
+                        <input type="text" class="form-control" value="{{ date('d-m-Y', strtotime("+1 months", strtotime($karyawan->tglgj))) }}" name="tgltg" id="tgltg"/>
                     </div>
                 </div>
                 @foreach($gajis as $gaji)
@@ -45,7 +45,7 @@
                         }
                         ?>
                         <input type="hidden" name="idgj[]" value="{{ $gaji->idgj }}" class="form-control"/>
-                        <input type="text" name="nominalgaji[]" value="{{ $gaji->jmtgh == null ? 0 : $gaji->hari }}" class="form-control"/>
+                        <input type="text" name="nominalgaji[]" value="{{ $gaji->jmtgh == null ? 0 : $gaji->hari }}" class="form-control" readonly=""/>
                         <div class="input-group-addon">{{ $gaji->jntgh }}</div>                        
                     </div>
                     <label class="col-sm-3" style="margin-top: 0.5%">
@@ -76,7 +76,8 @@
         dateFormat: "dd-mm-yy",
         changeYear: true,
         changeMonth: true,
-        maxDate: new Date()
+        minDate: new Date("<?php echo date('Y', strtotime("+1 months", strtotime($karyawan->tglgj))).'/'.date('m', strtotime("+1 months", strtotime($karyawan->tglgj))).'/01'?>"),
+        maxDate: new Date("<?php echo date('Y', strtotime("+1 months", strtotime($karyawan->tglgj))).'/'.date('m', strtotime("+1 months", strtotime($karyawan->tglgj))).'/'.date('t', strtotime("+1 months", strtotime($karyawan->tglgj)))?>")
     });
 </script> 
 @stop

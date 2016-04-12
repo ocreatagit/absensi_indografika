@@ -9,11 +9,13 @@ class TransaksiTabunganController extends \BaseController {
      */
     public function index() {
         $success = Session::get('tt01_success');
+        $danger = Session::get('tt01_danger');
         $tt01 = new tt01();
         $data = array(
             "karyawans" => mk01::where("status", "=", "Y")->get(),
             "tabungans" => $tt01->getTabungan(),
-            "tt01_success" => $success
+            "tt01_success" => $success,
+            "tt01_danger" => $danger
         );
         return View::make('transaksi.trans_tabungan', $data);
     }
@@ -48,22 +50,29 @@ class TransaksiTabunganController extends \BaseController {
 
         // 2a. jika semua validasi terpenuhi simpan ke database
         if ($validator->passes()) {
+            // validasi input tabungan tidak boleh double pada bulan yang sama
+            $flginsert = TRUE;
+
             $niltb = Input::get("niltb");
             $idkar = Input::get("idkar");
             $tt01 = new tt01();
             $idtb = $tt01->getAutoIncrement();
+            $lasttb = $tt01->getLatestTabungan($idkar, date("Y-m-d"));
+            if (count($lasttb) == 0) {
+                $tt01->nortb = "TB" . $idtb . date("m") . date("y");
+                $tt01->tgltb = date("Y-m-d");
+                $tt01->niltb = $niltb;
+                $tt01->idkar = $idkar;
+                $tt01->save();
 
-            $tt01->nortb = "TB" . $idtb . date("m") . date("y");
-            $tt01->tgltb = date("Y-m-d");
-            $tt01->niltb = $niltb;
-            $tt01->idkar = $idkar;
-            $tt01->save();
-
-            $mk01 = mk01::find($idkar);
-            $mk01->tbsld = $mk01->tbsld + $niltb;
-            $mk01->save();
-
-            Session::flash('tt01_success', 'Data Telah Ditambahkan!');
+                $mk01 = mk01::find($idkar);
+                $mk01->tbsld = $mk01->tbsld + $niltb;
+                $mk01->save();
+                Session::flash('tt01_success', 'Data Telah Ditambahkan!');
+            } else {
+                Session::flash('tt01_danger', 'Tabungan Bulan ini telah Di-inputkan !');
+            }
+            
             return Redirect::to('inputdata/tabungan');
         }
         // 2b. jika tidak, kembali ke halaman form registrasi
@@ -91,7 +100,13 @@ class TransaksiTabunganController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //
+        $success = Session::get('tt01_success');
+        $tt01 = new tt01();
+        $data = array(
+            "tabungan" => $tt01->getKarTabungan($id),
+            "tt01_success" => $success
+        );
+        return View::make('transaksi.trans_tabungan_edit', $data);
     }
 
     /**
@@ -101,7 +116,40 @@ class TransaksiTabunganController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        //
+        $messages = array(
+            'required' => 'Inputan <b>Tidak Boleh Kosong</b>!',
+            'numeric' => 'Inputan <b>Harus Angka</b>!',
+            'same' => 'Password <b>Tidak Sama</b>!'
+        );
+
+        $validator = Validator::make(
+                        Input::all(), array(
+                    "niltb" => "required|numeric"
+                        ), $messages
+        );
+
+        // 2a. jika semua validasi terpenuhi simpan ke database
+        if ($validator->passes()) {
+            // validasi input tabungan tidak boleh double pada bulan yang sama
+
+            $idkar = Input::get("idkar");
+            $tt01 = tt01::find($id);
+
+            if ($tt01->idtg == 0) {
+                $tt01->niltb = Input::get("niltb");
+                $tt01->save();
+                Session::flash('tt01_success', 'Data Telah Diubah !');
+            } else {
+                Session::flash('tt01_danger', 'Tabungan Telah Dibayarkan !');
+            }
+            return Redirect::to('inputdata/tabungan');
+        }
+        // 2b. jika tidak, kembali ke halaman form registrasi
+        else {
+            return Redirect::to('inputdata/tabungan')
+                            ->withErrors($validator)
+                            ->withInput();
+        }
     }
 
     /**

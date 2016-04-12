@@ -62,18 +62,33 @@
                             } else {
                                 $totalTagih = $infogaji->hari * $infogaji->nilgj;
                             }
-                            $totalgaji += $totalTagih;
-
-                            $omtim = (($karyawan->kmtim * $omzetTim) / 100);
-                            if (count($referrals) < 1) {
-                                $omtim = 0;
-                            }
+                            $totalgaji += $totalTagih;                            
                             ?>
                             @endforeach
+                            <?php
+//                            echo $totalgaji; exit;
+                            $totalgaji += (($karyawan->kmindv * $omzetIndividu) / 100);
+                            $omtim = (($karyawan->kmtim * $omzetTim) / 100);
+                            if (count($referrals) > 1) {
+                                $bool = FALSE;
+                                foreach ($referrals as $key => $val) {
+                                    if ($val->mk01_id_child == $karyawan->idkar && $val->flglead == "Yes") {
+                                        $bool = TRUE;
+                                        break;
+                                    }
+                                }
+                                if ($bool == FALSE) {
+                                    $omtim = 0;
+                                }
+                            } else {
+                                $omtim = 0;
+                            }
+                            $totalgaji += $omtim;
+                            ?>
                             <div class="form-group blue">
                                 <label class="col-sm-5 control-label">Total Gaji : </label>
                                 <div class="col-sm-2 marginTop25">
-                                    <label> Rp.{{ number_format($totalgaji + $gaji->ttlbns + (($karyawan->kmindv * $omzetIndividu) / 100) + $omtim,0,',','.') }},- </label>
+                                    <label> Rp.{{ number_format($totalgaji,0,',','.') }},- </label>
                                 </div>
                             </div>
                             <?php
@@ -95,7 +110,7 @@
                                 <label class="col-sm-5 control-label">Total Gaji Bersih : </label>
                                 <div class="col-sm-2 marginTop25">
 
-                                    <label> Rp.{{ number_format(($totalgaji + $gaji->ttlbns + (($karyawan->kmindv * $omzetIndividu) / 100) + $omtim) - $totalpinjaman,0,',','.') }},- </label>
+                                    <label> Rp.{{ number_format(($totalgaji + $gaji->ttlbns) - $totalpinjaman,0,',','.') }},- </label>
                                 </div>
                             </div>
                         </form>
@@ -119,7 +134,7 @@
                                 <label class="col-sm-4 control-label">Gaji Bonus</label>
                                 <div class="col-sm-5 input-group ">
                                     <input type="hidden" name="idtg" value="{{ $gaji->idtg }}"/>
-                                    <input type="text" class="form-control" value="{{ Input::old('ttlbns', $gaji->ttlbns) }}" name="ttlbns"/>
+                                    <input type="text" class="form-control" value="{{ Input::old('ttlbns', number_format($gaji->ttlbns, 0, ',', '')) }}" name="ttlbns" {{ $gaji->status == 'Y' ? 'disabled=""' : '' }}/>
                                 </div>
                                 @if($errors->first('ttlbns'))
                                 <div class="col-sm-5 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('ttlbns') }}</div>
@@ -128,7 +143,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label"></label>
                                 <div class="col-sm-5 input-group ">
-                                    <button type="submit" value="btn_submit" name="btn_submit" class="btn btn-primary"> Simpan Gaji</button>
+                                    <button type="submit" value="btn_submit" name="btn_submit" class="btn btn-primary" {{ $gaji->status == 'Y' ? 'disabled=""' : '' }}> Simpan Gaji</button>
                                 </div>
                             </div>
                         </form> 
@@ -170,7 +185,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">Terlambat : </label>
                                         <div class="col-sm-7 marginTop08">           
-                                            <label>{{ $durasiLambat }} Menit </label>
+                                            <label>{{ $durasiLambat == '' ? 0 : $durasiLambat }} Menit </label>
                                         </div>
                                     </div>
                                     <div class="form-group blue">

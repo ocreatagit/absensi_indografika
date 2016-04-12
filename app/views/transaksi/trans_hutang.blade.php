@@ -21,6 +21,12 @@
                 <i class="fa fa-info-circle"></i> {{ $th01_success }}
             </div>    
             @endif
+            @if(Session::has('th01_danger'))
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa fa-warning"></i> {{ $th01_danger }}
+            </div>    
+            @endif
             <div class="panel-body">
                 <div class="row">
                     <form class="form-horizontal" action="{{ action("TransaksiHutangController@store") }}" method="POST">
@@ -106,6 +112,7 @@
                                 <td>{{ $hutang->jenhut }}</td>
                                 <td>{{ $hutang->flglns == "Y" ? "Lunas" : "Belum Lunas" }}</td>
                                 <td>
+                                    <a href="{{ action('TransaksiHutangController@edit', [$hutang->idhut]) }}" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Edit Data?"><i class="fa fa-edit"></i></a>
                                     <a href="{{ action('TransaksiHutangController@destroy', [$hutang->idhut]) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>

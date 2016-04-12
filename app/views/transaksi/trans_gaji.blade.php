@@ -65,7 +65,7 @@
                                 }
                                 ?>
                                 <td class="text-center" width="15%">
-                                    <a href="{{ action('MasterKaryawanController@index') }}" class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Hapus Transaksi?"><i class="fa fa-trash"></i></a>
+                                    <a href="{{ action('TransaksiGajiController@destroy', [$gaji->idtg]) }}" class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Hapus Transaksi?"><i class="fa fa-trash"></i></a>
                                         <?php $no++; ?>
                                 </td>
                             </tr>

@@ -23,7 +23,19 @@ class tt01 extends Eloquent {
     }
 
     function getTabunganGaji($idkar, $date) {
-        $sql = "SELECT * FROM tt01 WHERE MONTH(tt01.tgltb) = ".date("n", strtotime($date))." AND YEAR(tt01.tgltb) = ".date("Y", strtotime($date))." AND tt01.idkar = $idkar;";
+        $sql = "SELECT * FROM tt01 WHERE MONTH(tt01.tgltb) = " . date("n", strtotime($date)) . " AND YEAR(tt01.tgltb) = " . date("Y", strtotime($date)) . " AND tt01.idkar = $idkar;";
+        $tt01 = DB::select(DB::raw($sql));
+        return $tt01;
+    }
+
+    function getKarTabungan($id) {
+        $sql = "SELECT tt01.*, mk01.nama FROM tt01 INNER JOIN mk01 ON mk01.idkar = tt01.idkar WHERE tt01.idtb = $id";
+        $tt01 = DB::select(DB::raw($sql));
+        return $tt01;
+    }
+
+    function getLatestTabungan($idkar, $date) {
+        $sql = "SELECT * FROM tt01 WHERE idkar = $idkar AND MONTH(tgltb) = " . date("n", strtotime($date)) . ";";
         $tt01 = DB::select(DB::raw($sql));
         return $tt01;
     }

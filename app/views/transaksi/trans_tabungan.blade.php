@@ -21,6 +21,12 @@
                 <i class="fa fa-info-circle"></i> {{ $tt01_success }}
             </div>    
             @endif
+            @if(Session::has('tt01_danger'))
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa fa-warning"></i> {{ $tt01_danger }}
+            </div>    
+            @endif
             <div class="panel-body">
                 <div class="row">
                     <form class="form-horizontal"  action="{{ action("TransaksiTabunganController@store") }}" method="POST">
@@ -84,6 +90,7 @@
                                 <td>{{ $tabungan->nama }}</td>
                                 <td>Rp.<?php echo number_format($tabungan->niltb, 0, ',', '.') ?>,-</td>
                                 <td>
+                                    <a href="{{ action('TransaksiTabunganController@edit', [$tabungan->idtb]) }}" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Edit Data?"><i class="fa fa-edit"></i></a>
                                     <a href="{{ action('TransaksiTabunganController@destroy', [$tabungan->idtb]) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Data?"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
@@ -154,7 +161,7 @@
         $(".delete").click(function (e) {
             e.preventDefault();
             var a = this.href;
-            alertify.confirm('Hapus Master Karyawan?', function (e) {
+            alertify.confirm('Hapus Tabungan Karyawan?', function (e) {
                 if (e) {
                     window.location.assign(a);
                 } else {
