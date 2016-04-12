@@ -130,6 +130,30 @@
                         <div class="col-sm-6 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('addr1') }}</div>
                         @endif
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Komisi Individu</label>
+                        <div class="col-sm-3 input-group">                            
+                            <div class="input-group">
+                                <input type="number" name="kmindv" class="form-control text-right" value="{{ Input::old('kmindv', $karyawan["kmindv"]) }}"/>
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        @if($errors->first('kmindv'))
+                        <div class="col-sm-6 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('kmindv') }}</div>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Komisi Tim</label>
+                        <div class="col-sm-3 input-group">                            
+                            <div class="input-group">
+                                <input type="number" name="kmtim" class="form-control text-right" value="{{ Input::old('kmtim', $karyawan["kmtim"]) }}"/>
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        @if($errors->first('kmtim'))
+                        <div class="col-sm-6 col-sm-offset-4 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('kmtim') }}</div>
+                        @endif
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <h2 class="page-header" style="margin-top: 0px;">Informasi Gaji</h2>
@@ -212,15 +236,6 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Nominal Gaji</label>
-                        <div class="col-sm-3 input-group ">
-                            <input type="text" class="form-control" value="" name="nilgj">                                    
-                        </div>
-                        @if($errors->first('nilgj'))
-                        <div class="col-sm-3 col-sm-offset-2 alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">{{ $errors->first('nilgj') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-4">
                             <div class="col-sm-8 input-group">
@@ -255,6 +270,82 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="panel panel-default" id="infGaji">
+            <div class="panel-heading">Informasi Referral</div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{{ action("MasterKaryawanController@saveReferral") }}" method="POST">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nama Karyawan</label>
+                        <div class="col-sm-3 input-group ">
+                            <select class="form-control" name="mk01_id_referral">
+                                <?php if (count($karyawanalls) > 0) { ?>
+                                    @foreach($karyawanalls as $karyawanall)
+                                    <option value="{{ $karyawanall->idkar }}">{{ $karyawanall->nama }}</option>
+                                    @endforeach
+                                <?php } else { ?>
+                                    <option value="">Tidak Terdapat Karyawan</option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                            <input type="hidden" name="idkaryawan" value="{{ $idkaryawan }}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Leader</label>
+                        <div class="col-sm-3 input-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="leader" id="inlineRadio1" value="Yes"> Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="leader" id="inlineRadio2" value="No" checked=""> No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-4">
+                            <div class="col-sm-8 input-group">
+                                <?php if (count($karyawanalls) > 0) { ?>
+                                    <button class="btn btn-success"> <i class=" glyphicon glyphicon-floppy-disk"></i> Simpan</button>
+                                <?php } else { ?>
+                                    <button class="btn btn-danger" disabled=""> <i class="glyphicon glyphicon-floppy-disk"></i> Simpan</button>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <div class="col-sm-6">
+                    <table class="table table-bordered table-hover" id="datatable2">
+                        <thead>
+                            <tr>
+                                <th class="text-left">No</th>
+                                <th class="text-left">Nama Referral</th>
+                                <th class="text-left">Leader</th>
+                                <th class="text-left">Opsi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <?php $no = 1; ?>
+                            @foreach($referrals as $referral)
+                            <tr>
+                                <td>{{ $no }}</td>
+                                <td>{{ $referral->child_name }}</td>
+                                <td>{{ $referral->flglead }}</td>
+                                <td>
+                                    <a href="{{ action('MasterKaryawanController@deleteReferral', [$referral->id, $referral->mk01_id_parent]) }}" class="btn btn-danger delete" data-toggle="tooltip" data-placement="right" title="Hapus Referral?"><i class="fa fa-trash"></i></a>
+                                        <?php $no++; ?>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php } ?>
 @stop
 
@@ -267,6 +358,8 @@
             donetext: 'Done'
         });
         $('#datatable').DataTable();
+
+        $('#datatable2').DataTable();
 
         $("#tglaktif").datepicker({
             inline: true,

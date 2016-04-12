@@ -8,6 +8,8 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1], 1);
+        
         $mj02 = new mj02();
         $jam_kerja = mj02::all();
         $success = Session::get('mj02_success');
@@ -82,6 +84,8 @@ class MasterJamKerjaController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
+        User::loginCheck([0,1], 1);
+        
         $mj02 = new mj02();
         $jam_kerja = $mj02->find($id);
         $data = array(

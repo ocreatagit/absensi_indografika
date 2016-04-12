@@ -21,7 +21,7 @@
                 <table class="col-sm-6">
                     <tr>
                         <td class="col-sm-6" >Kode Absensi</td>
-                        <td style="text-align: left">0004</td>
+                        <td style="text-align: left">{{ $idkar }}</td>
                     </tr>
                 </table>
                 <br>

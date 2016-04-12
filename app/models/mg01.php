@@ -9,6 +9,10 @@ class mg01 extends Eloquent {
         return $this->hasMany("mg02");
     }
     
+    function tg02() {
+        return $this->hasMany("tg02");
+    }
+            
     function getJenisGajiAktif(){
         return $this->where('status', '=', 'Y')->orderBy('idgj', 'ASC')->get();
     }

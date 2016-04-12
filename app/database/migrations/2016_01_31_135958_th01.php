@@ -13,16 +13,15 @@ class Th01 extends Migration {
     public function up() {
         Schema::create('th01', function($table) {
             $table->increments('idhut');
+            $table->text('norhut');
             $table->datetime('tglhut');
             $table->string('jenhut');
+            $table->tinyInteger('jmlang');
             $table->bigInteger('nilhut');
             $table->char("flglns", 1);
             $table->integer("idkar")->unsigned();
+            $table->foreign('idkar')->references('idkar')->on('mk01');            
             $table->timestamps();
-        });
-
-        Schema::table('th01', function($table) {
-            $table->foreign('idkar')->references('idkar')->on('mk01');
         });
     }
 

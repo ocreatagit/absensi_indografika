@@ -8,6 +8,8 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function index() {
+        User::loginCheck([0,1]);
+        
         $mj01 = new mj01();
         $jabatan = mj01::all();
         $success = Session::get('mj01_success');
@@ -80,6 +82,8 @@ class MasterJabatanController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
+        User::loginCheck([0,1]);
+        
         $jabatan = new mj01();
         $jabatan = $jabatan->find($id);
         $data = array(

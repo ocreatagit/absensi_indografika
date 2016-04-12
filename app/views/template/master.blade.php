@@ -26,6 +26,30 @@
                 background-color: none;
                 color: white;
             }
+            
+            .red {
+                color: red;
+            }
+            
+            .green {
+                color: green;
+            }
+            
+            .blue {
+                color: blue;
+            }
+            
+            .marginTop08 {
+                margin-top: 0.8%;
+            }
+            
+            .marginTop25{
+                margin-top: 2.5%;
+            }
+            
+            #leftInfo img {
+                text-align: center;
+            }
         </style>
     </head>
 
@@ -67,7 +91,9 @@
                             <ul class="dropdown-menu">
                                 <li>{{ HTML::link('inputdata/hutang', 'Hutang')}}</li>
                                 <li>{{ HTML::link('inputdata/tabungan', 'Tabungan')}}</li>
-                                <li>{{ HTML::link('inputdata/gaji', 'Gaji')}}</li>
+                                <li>{{ HTML::link('inputdata/gaji', 'Slip Gaji')}}</li>
+                                <li>{{ HTML::link('inputdata/transfer', 'Transfer Gaji')}}</li>
+                                <li>{{ HTML::link('inputdata/omzet', 'Omzet Karyawan')}}</li>
                             </ul>
                         </li>
                         <li class="dropdown">
